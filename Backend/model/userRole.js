@@ -15,12 +15,12 @@ const userRoleSchema=new mongoose.Schema({
     },
     Role:{
         type: String,
-        enum:["admin","HR","RM","L&C","HR-cordinator","RM-cordinator","L&C-cordinator"],
+        enum:["admin","HR","RM","L&C"],
         default:"admin",
     },
     status:{
         type: Number,
-        enum:[0,1],
+        enum:[0 , 1],
         default:1,
     },
     _id:{
@@ -34,7 +34,7 @@ const userRoleSchema=new mongoose.Schema({
 
 userRoleSchema.pre("save",function (next){
     if(this.isModified("Role")){
-        this.status=this.Role ==="admin" ? 1:0;
+        this.status=this.Role ==="admin" ? 1 : 0;
     }
     next()
 })
