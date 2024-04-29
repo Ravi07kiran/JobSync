@@ -35,7 +35,8 @@ router.get("/associates/:associatesId", async (req,res)=>{
     console.error("fetching error",employeeId);
     res.status(404)
   }
-  }catch(error){
+  }catch(error)
+  {
     console.error("fetching error");
     res.status(500)
   }
