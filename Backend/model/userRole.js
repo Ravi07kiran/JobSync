@@ -7,7 +7,8 @@ const userRoleSchema=new mongoose.Schema({
     },
     email:{
         type: String,
-        required :true,
+        required: true,
+        unique: true,
     },
     password:{
         type: String,
@@ -28,7 +29,6 @@ const userRoleSchema=new mongoose.Schema({
         required: true,
         auto: true
     },
-    
 
 })
 
