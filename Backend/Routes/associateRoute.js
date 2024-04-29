@@ -5,7 +5,7 @@ const router=express.Router();
 const asso= require('../model/associates');
 
 
-router.get("/employee", async (req,res)=>{
+router.get("/associates", async (req,res)=>{
     try{
         const candidates = await asso.find({})
 
@@ -20,7 +20,7 @@ router.get("/employee", async (req,res)=>{
     }
 })
 
-router.get("/empolyees/:employeeId", async (req,res)=>{
+router.get("/associates/:associatesId", async (req,res)=>{
   try{
     const employeeId= req.params.employeeId
   
@@ -41,14 +41,15 @@ router.get("/empolyees/:employeeId", async (req,res)=>{
   }
 });
 
-router.post("/add_empolyee", async (req,res)=>{
+router.post("/add_associate", async (req,res)=>{
   try{
-    const {name, employeeId, Email, skills} = req.body;
-    const newEmp =new asso({
+    const {name, employeeId, Email, skills, mapped} = req.body;
+    const newEmp = new asso({
       name,
       employeeId,
       Email,
       skills,
+      mapped,
     })
     await newEmp.save();
     res.status(200).json({asso:newEmp})
@@ -60,7 +61,7 @@ router.post("/add_empolyee", async (req,res)=>{
 })
 
 
-router.delete("/delete_employee/:id", async (req,res)=>{
+router.delete("/delete_associates/:id", async (req,res)=>{
   try{
     const employeeID= req.params.id;
     if(!employeeID)
@@ -81,10 +82,10 @@ router.delete("/delete_employee/:id", async (req,res)=>{
 })
 
 
-router.get("/employee_count", async(req,res)=>{
+router.get("/associates_count", async(req,res)=>{
   try{
-    const employeecount = await employee.countDocuments({});
-    res.status(500)
+    const employeecount = await asso.countDocuments({});
+    res.json({ Status: true, Result: employeecount})
   }catch(error)
   {
     console.error(error);
@@ -93,7 +94,7 @@ router.get("/employee_count", async(req,res)=>{
 })
 
 
-router.put("/update_employee/:id", async (req,res)=>{
+router.put("/update_associates/:id", async (req,res)=>{
   const {id} = req.params;
   const  { name, employeeId, Email, skills } = req.body;
    try{
@@ -110,6 +111,28 @@ router.put("/update_employee/:id", async (req,res)=>{
     console.error(error)
     res.status(500).json({message:"Internal server error"})
    }
+})
+
+
+router.get("/mapped_employees", async (req,res)=>{
+  try{
+    const mappedEmployees = await asso.find({mapped: true});
+    res.status(200).json({ mappedEmployees });
+  }catch(error){
+    console.error(error);
+    res.status(500).json({error:"Internal server"})
+  }
+})
+
+
+router.get("/unmapped_employees", async (req,res)=>{
+  try{
+    const unmappedEmployees = await asso.find({mapped: false});
+    res.status(200).json({ unmappedEmployees });
+  }catch(error){
+    console.error(error);
+    res.status(500).json({error:"Internal server"})
+  }
 })
 
 

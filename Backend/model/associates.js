@@ -14,10 +14,15 @@ const AssociateSchema =new mongoose.Schema({
         type:String,
         unique:true,
         required:true,
-    },
+    }, 
     skills:{
         type:String,
-        required:true,
+        required: true,
+    },
+    mapped: {
+        type: Boolean,
+        default: false,
+        required: true,
     },
     user:{
         type: mongoose.Schema.Types.ObjectId,
