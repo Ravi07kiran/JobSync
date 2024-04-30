@@ -33,7 +33,7 @@ const verificationUser = (req,res,next) =>{
 };
 
 
-router.get("/home",verificationUser,(req,res)=>{
+router.get("/home",verificationUser ,(req,res)=>{
    return res.status(200).json({ success:true, user:req.user})
 })
 
@@ -93,7 +93,7 @@ router.post("/login",async (req,res)=>{
 
 router.get("/users",async (req,res)=>{
     try{
-        const users = await User.find({role:["RM","L&C","HR"]},"_id name email");
+        const users = await User.find({ Role: { $in: ["RM", "LC", "HR"] } },"_id name email");
         res.json(users);
     }catch(error){
         console.error(error);
