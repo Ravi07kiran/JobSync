@@ -1,0 +1,12 @@
+Resource Management Team -> Human Resource Team: Request for job assignment
+Human Resource Team -> Resource Mapping System: Review available resources
+Resource Mapping System -> Human Resource Team: Provide mapping results
+Human Resource Team -> Training Team: Identify training needs for unmapped associates
+Training Team -> Human Resource Team: Develop additional training plan
+Human Resource Team -> Benched Associates: Notify about additional training
+Benched Associates -> Training Team: Attend additional training
+Training Team -> Human Resource Team: Confirm completion of additional training
+Human Resource Team -> Resource Mapping System: Attempt remapping of trained associates
+Resource Mapping System -> Human Resource Team: Provide updated mapping results
+Human Resource Team -> Resource Management Team: Assign mapped associates to projects
+Resource Management Team -> Human Resource Team: Confirm assignment

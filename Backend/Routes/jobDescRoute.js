@@ -5,11 +5,11 @@ const jobD =  require('../model/jobDescription');
 const router=express.Router();
 
 
-router.get('/jobDesc', async (req,res)=>{
+router.get('/jobDescriptions', async (req,res)=>{
     try{
         const jobDescs =  await jobD.find({})
         if(jobDescs.length > 0){
-            res.status(200).json({jobD})
+            res.status(200).json({jobDescs})
         }else{
             res.status(404)
         }
@@ -20,7 +20,7 @@ router.get('/jobDesc', async (req,res)=>{
 });
 
 
-router.post('/jobDesc_add', async (req,res)=>{
+router.post('/jobDescription_add', async (req,res)=>{
     try{
         const {jobID,title,description,location } = req.body;
         const newjobDesc = new jobD({
@@ -38,7 +38,7 @@ router.post('/jobDesc_add', async (req,res)=>{
 })
 
 
-router.delete('/jobDesc_delete/:jobDescId', async (req,res) => {
+router.delete('/jobDescription_delete/:jobDescId', async (req,res) => {
     try {
         const deletedjobDesc = await jobD.findByIdAndDelete(req.params.jobDescId)
         if(!deletedjobDesc){
@@ -50,7 +50,7 @@ router.delete('/jobDesc_delete/:jobDescId', async (req,res) => {
 })
 
 
-router.put('/jobDesc_update/:id', async (req,res)=>{
+router.put('/jobDescription_update/:id', async (req,res)=>{
     const {id} = req.params;
     const {jobID, title, description, location } = req.body;
 
