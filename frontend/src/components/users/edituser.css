@@ -1,0 +1,85 @@
+/* Buttons styles */
+.btns2grp {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.btnup,
+.btns {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.btnup {
+  background-color: #13aad8;
+  color: #fff;
+}
+
+.btnup:hover {
+  background-color: #0193c0;
+  transition: 0.3s;
+  color: #fff;
+}
+
+.btns {
+  background-color: #f10707e4;
+}
+
+.btns:hover {
+  background-color: #d70303e4;
+  transition: 0.3s;
+}
+
+/* Update.css styles */
+.edit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.edittext {
+  color: black;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.edit-content {
+  justify-content: center;
+  background: #fff;
+  padding: 50px;
+  width: 50%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.edit-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 800px) {
+  .update-content {
+    width: 70%;
+  }
+}
+.usergroup {
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}

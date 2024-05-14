@@ -1,0 +1,117 @@
+.addempcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  padding-bottom: 2rem;
+}
+
+.addempcontent {
+  width: 60%;
+  padding: 20px;
+  box-shadow: 5px 5px 12px #d3d3d3, -5px -5px 12px #f2f2f2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.addempform {
+  display: flex;
+  flex-direction: column;
+}
+
+.addempgroup {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+}
+
+.addemp {
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.passwords {
+  display: flex;
+  gap: 20px;
+}
+
+.showpassword button {
+  background: none;
+  border: none;
+  color: #3131314e;
+}
+
+.addemp:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 157, 255, 0.25);
+}
+
+.editempgroup {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.editemp-save {
+  padding: 8px 22px;
+  background-color: #03a6d8;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editemp-save:hover {
+  background-color: #0185ad;
+}
+.editemp-close {
+  padding: 8px 22px;
+  background-color: #f10707e4;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editemp-close:hover {
+  background-color: #d70303e4;
+}
+
+@media (max-width: 800px) {
+  .addempcontainer {
+    padding-top: 1rem;
+  }
+  .addempcontent {
+    width: 80%;
+  }
+}
+@media (max-width: 600px) {
+  .addempcontent {
+    width: 90%;
+  }
+}
