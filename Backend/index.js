@@ -1,27 +1,28 @@
-const express=require('express');
-const cors=require('cors');
-
-const authentication= require('./Routes/authentication');
-const jobDescription= require('./Routes/jobDescRoute');
-
-const Associate = require('./Routes/associateRoute')
-
+const express = require("express");
+// const mongoose = require("mongoose");
+const cors = require("cors");
+const authRoutes = require("./routes/authRoutes");
+const employeeRoutes = require("./routes/employeeRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 const { default: mongoose } = require('mongoose');
+const bodyParser = require("body-parser");
 
 require('dotenv').config();
 
-const PORT=process.env.PORT || 4000;
-
+const PORT = process.env.PORT || 4000;
 const URI=process.env.URI;
 
-const app=express();
+const app = express();
 app.use(cors());
-
-
-app.use('/authuser',authentication);
-app.use('/JD',jobDescription);
-app.use('/associate', Associate);
+app.use(bodyParser.json());
+app.use("/auth", authRoutes);
+app.use("/employee", employeeRoutes);
+app.use("/category", categoryRoutes);
+app.use("/upload",uploadRoutes);
 
 mongoose.connect(URI)
 
-app.listen(PORT,()=>console.log('yep'))
+app.listen(PORT, () => {
+  console.log(`I am clone bro !!`);
+});

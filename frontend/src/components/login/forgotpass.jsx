@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import imageArt from "../img/back1.png";
-import Logo from "../img/Logo.png";
+// import imageArt from "../img/back1.png";
+// import Logo from "../img/Logo.png";
 import { Link } from "react-router-dom";
 import "./login.css";
 import { useDispatch } from "react-redux/es/exports";
@@ -17,7 +17,7 @@ function Forgot() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios
-      .post("https://localhost:4000/forgotpass", {
+      .post("http://localhost:4000/forgotpass", {
         email,
       })
       .then((res) => {
@@ -57,13 +57,13 @@ function Forgot() {
     <div className="cardStyle">
       <nav className="navbar navbar-expand-lg navbar-light" style={{ top: 0 }}>
         <div className="BAR">
-          <Link to="/" className="navbar-brand">
+          {/* <Link to="/" className="navbar-brand">
             <img
               src={Logo}
               style={{ height: "150%", marginLeft: "15%" }}
               alt="Logo"
             />
-          </Link>
+          </Link> */}
           <div className="d-flex">
             <ul
               className="navbar-nav"
@@ -102,9 +102,9 @@ function Forgot() {
         </div>
       </nav>
       <div className="blurredCardStyle mx-auto p-2 rounded-4 px-4">
-        <div>
+        {/* <div>
           <img src={imageArt} alt="" className="art" />
-        </div>
+        </div> */}
         <div style={cardNew}>
           <h2
             className="d-flex justify-content-center align-items-center"

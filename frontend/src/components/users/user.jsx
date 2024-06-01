@@ -21,7 +21,7 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        `https://localhost:4000/auth/users`
+        `http://localhost:4000/auth/users`
       );
       if (response.data && response.data.length > 0) {
         setUsers(response.data);
@@ -41,7 +41,7 @@ const Users = () => {
   const deleteUser = async (userId) => {
     try {
       const response = await axios.delete(
-        `https://localhost:4000/auth/users/${userId}`
+        `http://localhost:4000/auth/users/${userId}`
       );
       if (response.status === 200) {
         toast.success("User deleted successfully");
@@ -79,7 +79,7 @@ const Users = () => {
   ) => {
     try {
       const response = await axios.put(
-        `https://localhost:4000/auth/update_user/${userId}`,
+        `http://localhost:4000/auth/update_user/${userId}`,
         {
           name: updatedUserName,
           email: updatedUserEmail,
@@ -131,6 +131,7 @@ const Users = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Role</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -140,6 +141,7 @@ const Users = () => {
                   <tr key={u._id}>
                     <td>{u.name}</td>
                     <td>{u.email}</td>
+                    <td>{u.role}</td>
                     <td>
                       <button
                         onClick={() =>

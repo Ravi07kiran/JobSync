@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }) => {
     } else {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
-        .get("https://localhost:4000/auth/home")
+        .get("http://localhost:4000/auth/home")
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
@@ -63,9 +63,7 @@ const ProtectedRoute = ({ children }) => {
       setMenu(RMuser);
     } else if(storedRole === "LC"){
       setMenu(LCuser);
-    } else {
-      setMenu(userMenu);
-    }
+    } 
   }, []);
 
   const capitalizeFirstLetter = (str) => {
@@ -98,6 +96,12 @@ const ProtectedRoute = ({ children }) => {
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
       onClick: () => navigate("/home/category"),
     },
+    {
+      title: "Uploader",
+      path: "/home/Uploader",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/Uploader"),
+    },
     
   ];
 
@@ -126,6 +130,12 @@ const ProtectedRoute = ({ children }) => {
       path: "/home/category",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
       onClick: () => navigate("/home/category"),
+    },
+    {
+      title: "Uploader",
+      path: "/home/Uploader",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/Uploader"),
     },
     // {
     //   title: "Profile",
@@ -161,11 +171,17 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/employee"),
     },
     {
-      title: "Category",
-      path: "/home/category",
-      icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
+      title: "Uploader",
+      path: "/home/Uploader",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/Uploader"),
     },
+    // {
+    //   title: "Category",
+    //   path: "/home/category",
+    //   icon: <MdOutlineFormatListBulleted className="react-icon" />,
+    //   onClick: () => navigate("/home/category"),
+    // },
     
   ];
 
@@ -175,6 +191,12 @@ const ProtectedRoute = ({ children }) => {
       path: "/home",
       icon: <MdDashboard className="react-icon" />,
       onClick: () => navigate("/home"),
+    },
+    {
+      title: "Uploader",
+      path: "/home/Uploader",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/Uploader"),
     },
     {
       title: "Users",

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import blogo from "../img/Logo.png";
+// import blogo from "../img/Logo.png";
 import { FaUserCircle, FaUserCheck, FaUserFriends } from "react-icons/fa";
 import "./choose.css";
 
@@ -34,13 +34,13 @@ const Choose = () => {
     <div className="cardStyle">
       <nav className="navbar navbar-expand-lg navbar-light" style={{ top: 0 }}>
         <div className="BAR">
-          <Link to="/" className="navbar-brand">
+          {/* <Link to="/" className="navbar-brand">
             <img
               src={blogo}
               style={{ height: "150%", marginLeft: "15%" }}
               alt="Logo"
             />
-          </Link>
+          </Link> */}
           <div className="d-flex">
             <ul
               className="navbar-nav"

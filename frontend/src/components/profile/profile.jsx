@@ -6,16 +6,21 @@ import "./profile.css";
 const Profile = () => {
   const [name, setUserName] = useState("");
   const [email, setUserEmail] = useState("");
+  const [role, setUserRole] = useState("");
 
   useEffect(() => {
     const storedName = sessionStorage.getItem("name");
     const storedEmail = sessionStorage.getItem("email");
+    const storedRole = sessionStorage.getItem("role");
 
     if (storedName) {
       setUserName(capitalizeFirstLetter(storedName));
     }
     if (storedEmail) {
       setUserEmail(storedEmail);
+    }
+    if(storedRole){
+      setUserRole(storedRole);
     }
   }, []);
 
@@ -46,6 +51,12 @@ const Profile = () => {
                 <strong>Email:</strong>
               </label>
               <h3 className="pro">{email || "userEmail"}</h3>
+            </div>
+            <div className="progroup">
+              <label htmlFor="description" className="form-label">
+                <strong>Role:</strong>
+              </label>
+              <h3 className="pro">{role || "userRole"}</h3>
             </div>
           </form>
         </div>

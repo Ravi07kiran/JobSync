@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import imageArt from "../img/back1.png";
-import Logo from "../img/Logo.png";
+// import imageArt from "../img/back1.png";
+// import Logo from "../img/Logo.png";
 import { Link } from "react-router-dom";
 import "./login.css";
 import { useDispatch } from "react-redux/es/exports";
@@ -27,7 +27,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "https://localhost:4000/auth/login",
+        "http://localhost:4000/auth/login",
         {
           email,
           password,
@@ -126,9 +126,9 @@ function Login() {
         </div>
       </nav>
       <div className="blurredCardStyle mx-auto p-2 rounded-4 px-4">
-        <div>
+        {/* <div>
           <img src={imageArt} alt="" className="art" />
-        </div>
+        </div> */}
         <div style={cardNew}>
           <h2
             className="d-flex justify-content-center align-items-center"

@@ -1,11 +1,11 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import blogo from "../img/Logo.png";
-import back2 from "../img/back2.png";
+// import blogo from "../img/Logo.png";
+// import back2 from "../img/back2.png";
 import "./firstpage.css";
 import HashLoader from "react-spinners/HashLoader";
-import Footer from "../footer/footer";
+// import Footer from "../footer/footer";
 
 const FirstPage = () => {
   const [isHoveredSignUp, setIsHoveredSignUp] = useState(false);
@@ -99,13 +99,13 @@ const FirstPage = () => {
               
             </div>
             <div className="design">
-              <div className="checkmarkStyle">
+              {/* <div className="checkmarkStyle">
                 <img className="back2" src={back2} alt="back1" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </div>
       )}

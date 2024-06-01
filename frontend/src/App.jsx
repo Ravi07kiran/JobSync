@@ -11,14 +11,15 @@ import AddUsers from "./components/users/adduser";
 import Employees from "./components/associates/associate";
 import AddEmployee from "./components/associates/addassociate";
 import EditEmployee from "./components/associates/editassociate";
-import Category from "./components/category/category";
-import AddCategory from "./components/category/addcategory";
+import Category from "./components/jobdesc/jobdesc";
+import AddCategory from "./components/jobdesc/addjobdesc";
 import Profile from "./components/profile/profile";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux/es/exports";
 import { authActions } from "./store";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
 import Choose from "./components/choose/choose";
+import Uploader from "./components/uploader/uploader";
 
 function App() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/register" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgotpass" element={<Forgot />}></Route>
+        <Route path="/Uploader" element={<Uploader/>}></Route>
         <Route path="/resetpass/:id/:token" element={<Reset />}></Route>
         <Route
           path="/home"
@@ -90,6 +92,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Category />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/home/Uploader"
+          element={
+            <ProtectedRoute>
+              <Uploader />
             </ProtectedRoute>
           }
         />

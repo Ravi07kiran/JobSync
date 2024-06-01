@@ -58,8 +58,10 @@ const EditUser = ({ onClose, onUpdate, userId, uname, uemail, urole }) => {
             Role
           </label>
           <select name="category" id="category" className="form-select">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+          <option value="admin">Admin</option>
+                <option value="LC">L&C</option>
+                <option value="RM">RM</option>
+                <option value="HR">HR</option>
           </select>
         </div>
         <div className="btns2grp">

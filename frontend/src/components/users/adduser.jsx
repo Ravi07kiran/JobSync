@@ -34,7 +34,7 @@ const AddUsers = () => {
     }
     setError("");
     axios
-      .post("https://localhost:4000/auth/register", {
+      .post("http://localhost:4000/auth/register", {
         name,
         email,
         password,
@@ -122,8 +122,10 @@ const AddUsers = () => {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
-                <option value="user">User</option>
                 <option value="admin">Admin</option>
+                <option value="LC">L&C</option>
+                <option value="RM">RM</option>
+                <option value="HR">HR</option>
               </select>
             </div>
             {error && (

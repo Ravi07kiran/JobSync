@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-// import noData from "../img/nodata.png";
 import "./associate.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,12 +9,14 @@ const Employees = () => {
   const [employees, setEmployee] = useState([]);
   const [allEmployees, setAllEmployees] = useState(null);
 
-  //get employee
+  // Get employees
   const fetchEmployee = async () => {
     try {
-      const response = await axios.get(
-        `https://localhost:4000/associate/associates`
-      );
+      const response = await axios.get("http://localhost:4000/employee/employees", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.data.employees && response.data.employees.length > 0) {
         setAllEmployees(response.data.employees);
         setEmployee(response.data.employees);
@@ -23,23 +24,22 @@ const Employees = () => {
         console.log("No employees found or empty response.");
       }
     } catch (error) {
-      console.error("Error");
+      console.error("Error fetching employees:", error);
     }
   };
+
   useEffect(() => {
     fetchEmployee();
-  }, [allEmployees]);
+  }, []);
 
-  //delete employee
+  // Delete employee
   const deleteEmployee = async (employeeId) => {
     try {
-      // Send a delete request to the backend
       const response = await axios.delete(
-        `https://localhost:4000/associate/delete_associate/${employeeId}`
+        `http://localhost:4000/employee/delete_employee/${employeeId}`
       );
 
       if (response.data.Status) {
-        // If the delete operation is successful, update the employee list
         const updatedEmployees = employees.filter((e) => e._id !== employeeId);
         setEmployee(updatedEmployees);
         toast.success("Deleted successfully!");
@@ -53,9 +53,6 @@ const Employees = () => {
     }
   };
 
-  // Check if employees is defined before mapping
-  const employeesList = employees || [];
-
   return (
     <div>
       <div className="empcontainer">
@@ -64,7 +61,7 @@ const Employees = () => {
           <h3>Employee List</h3>
         </div>
         <div className="empcenter">
-          <div class="empcustom-content">
+          <div className="empcustom-content">
             <div className="emptask">
               <Link to="/home/employee/add" className="emp-btn btn-9">
                 <span>Add Employee</span>
@@ -72,15 +69,14 @@ const Employees = () => {
             </div>
           </div>
         </div>
-        {employeesList.length > 0 ? (
+        {employees.length > 0 ? (
           <div className="employee-card-container">
-            {employeesList.map((e) => (
+            {employees.map((e) => (
               <div className="employee-card" key={e._id}>
                 <h4>{e.name}</h4>
                 <p>Email: {e.email}</p>
-                <p>Tier: {e.salary}</p>
-                <p>Expirence: {e.address}</p>
-                <p>Expert Skill: {e.categorys}</p>
+                <p>Tier: {e.tier}</p>
+                <p>Experience: {e.experience}</p>
                 <div
                   className="employee-card-actions"
                   style={{ justifyContent: "flex-end" }}
@@ -103,7 +99,6 @@ const Employees = () => {
           </div>
         ) : (
           <div className="no-data-message">
-            <img src={noData} alt="" className="nodata" />
             <p className="no-data-text">
               No employees found. Add new employees to display in the list.
             </p>

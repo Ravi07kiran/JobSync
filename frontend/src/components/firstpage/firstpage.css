@@ -104,8 +104,8 @@
 .textbox {
   color: transparent;
   -webkit-text-stroke: 1px #ffffff;
-  background: url(../img/back.png);
-  -webkit-background-clip: text;
+  /* background: url(../img/back.png);
+  -webkit-background-clip: text; */
   background-position: 0 0;
   animation: back 20s linear infinite;
 }

@@ -4,56 +4,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../sidenavbar/sidenavbar.css";
 import "./addassociates.css";
 import "./editassociate.css";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const EditEmployee = () => {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleShowPassword = (event) => {
-    event.preventDefault();
-    setShowPassword(!showPassword);
-  };
   const [employeeData, setEmployeeData] = useState({
     name: "",
     email: "",
-    password: "",
-    address: "",
-    salary: "",
-    categorys: "",
+    experience: "",
+    tier: ""
   });
 
   const { employeeId } = useParams();
-
-  const [categories, setCategories] = useState([]);
-  const [allCategories, setAllCategories] = useState(null);
-  //get categories
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get(
-        `https://localhost:4000/category/category`
-      );
-      if (response.data.categories && response.data.categories.length > 0) {
-        setAllCategories(response.data.categories);
-        setCategories(response.data.categories);
-      } else {
-        console.log("No categories found or empty response.");
-      }
-    } catch (error) {
-      console.error("Error");
-    }
-  };
-  useEffect(() => {
-    fetchCategories();
-  }, [allCategories]);
-  // Check if categories is defined before mapping
-  const categoriesList = categories || [];
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
         const response = await axios.get(
-          `https://localhost:4000/associates/associate_s/${employeeId}`
+          `http://localhost:4000/employee/employees/${employeeId}`
         );
         setEmployeeData(response.data);
       } catch (error) {
@@ -64,11 +31,11 @@ const EditEmployee = () => {
     fetchEmployeeData();
   }, [employeeId]);
 
-  const handleInputChange = (e, fieldName) => {
-    const { value } = e.target;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setEmployeeData((prevData) => ({
       ...prevData,
-      [fieldName]: value,
+      [name]: value,
     }));
   };
 
@@ -76,7 +43,7 @@ const EditEmployee = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `https://localhost:4000/associate/update_associates/${employeeId}`,
+        `http://localhost:4000/employee/update_employee/${employeeId}`,
         employeeData
       );
       navigate("/home/employee");
@@ -99,10 +66,11 @@ const EditEmployee = () => {
                 type="text"
                 className="addemp form-control"
                 id="inputName"
+                name="name"
                 placeholder="Enter Name"
                 required
                 value={employeeData.name}
-                onChange={(e) => handleInputChange(e, "name")}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
@@ -113,90 +81,52 @@ const EditEmployee = () => {
                 type="email"
                 className="addemp form-control"
                 id="inputEmail4"
+                name="email"
                 placeholder="Enter Email"
                 required
                 autoComplete="off"
                 value={employeeData.email}
-                onChange={(e) => handleInputChange(e, "email")}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
-              <div className="passwords">
-                <label htmlFor="inputPassword4" className="form-label">
-                  Password
-                </label>
-                <div className="showpassword">
-                  <button onClick={(event) => handleShowPassword(event)}>
-                    {showPassword ? <FiEye /> : <FiEyeOff />}
-                  </button>
-                </div>
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="addemp form-control"
-                id="inputPassword4"
-                placeholder="Enter Password"
-                required
-                value={employeeData.password}
-                onChange={(e) => handleInputChange(e, "password")}
-              />
-            </div>
-            <div className="addempgroup">
-              <label htmlFor="inputSalary" className="form-label">
+              <label htmlFor="inputTier" className="form-label">
                 Tier
               </label>
               <input
-                type="text"
+                type="number"
                 className="addemp form-control"
-                id="inputSalary"
-                placeholder="Enter Salary"
+                id="inputTier"
+                name="tier"
+                placeholder="Enter Tier"
                 required
                 autoComplete="off"
-                value={employeeData.salary}
-                onChange={(e) => handleInputChange(e, "salary")}
+                value={employeeData.tier}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
-              <label htmlFor="inputAddress" className="form-label">
-                Expirence
+              <label htmlFor="inputExperience" className="form-label">
+                Experience
               </label>
               <input
-                type="text"
+                type="number"
                 className="addemp form-control"
-                id="inputAddress"
-                placeholder="ABC Apartments"
+                id="inputExperience"
+                name="experience"
+                placeholder="Enter Experience"
                 required
                 autoComplete="off"
-                value={employeeData.address}
-                onChange={(e) => handleInputChange(e, "address")}
+                value={employeeData.experience}
+                onChange={handleInputChange}
               />
-            </div>
-            <div className="addempgroup">
-              <label htmlFor="category" className="form-label">
-                Category
-              </label>
-              <select
-                name="category"
-                id="category"
-                className="form-select"
-                value={employeeData.categorys}
-                onChange={(e) => handleInputChange(e, "categorys")}
-              >
-                {categoriesList.map((c) => {
-                  return (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  );
-                })}
-              </select>
             </div>
             <div className="editempgroup">
               <button type="submit" className="editemp-save">
                 Save
               </button>
               <button
-                type="submit"
+                type="button"
                 className="editemp-close"
                 onClick={() => navigate("/home/employee")}
               >

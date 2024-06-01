@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaUserCircle } from "react-icons/fa";
 import "./sidenavbar.css";
-import noData from "../img/nodata.png";
+// import noData from "../img/nodata.png";
 
 const SideNavbar = () => {
   const [userId, setUserId] = useState(null);
@@ -15,7 +15,7 @@ const SideNavbar = () => {
 
   const employeeCount = () => {
     axios
-      .get(`http://localhost:4000/associate/associates_count`)
+      .get(`http://localhost:4000/employee/employee_count`)
       .then((response) => {
         if (response.data.Status) {
           setEmployeeTotal(response.data.Result);
@@ -53,7 +53,7 @@ const SideNavbar = () => {
     if (storedUserId) {
       setUserId(storedUserId);
       employeeCount(storedUserId);
-      fetchSalaryTotal(storedUserId);
+      // fetchSalaryTotal(storedUserId);
     }
   }, []);
 
@@ -63,14 +63,14 @@ const SideNavbar = () => {
 
   useEffect(() => {
     employeeCount();
-    fetchSalaryTotal();
+    // fetchSalaryTotal();
   }, []);
 
   //get employee
   const fetchEmployee = async () => {
     try {
       const response = await axios.get(
-        `https://localhost:4000/associate/associates`
+        `http://localhost:4000/employee/employees`
       );
       if (response.data.employees && response.data.employees.length > 0) {
         setAllEmployees(response.data.employees);
@@ -151,15 +151,15 @@ const SideNavbar = () => {
                         <td>{e.name}</td>
                         <td>{e.email}</td>
                         <td>{e.salary}</td>
-                        <td>{e.address}</td>
-                        <td>{e.categorys}</td>
+                        <td>{e.experience}</td>
+                        <td>{e.tier}</td>
                       </tr>
                     ))
                   ) : (
                     <tr>
                       <td colSpan="5">
                         <div className="no-data-message">
-                          <img src={noData} alt="" className="nodata" />
+                          {/* <img src={noData} alt="" className="nodata" /> */}
                           <p className="no-data-text">
                             No employees found. Add new employees from employees
                             page.
