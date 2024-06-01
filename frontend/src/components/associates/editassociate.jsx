@@ -6,6 +6,10 @@ import "./addassociates.css";
 import "./editassociate.css";
 
 const EditEmployee = () => {
+
+  
+ 
+
   const navigate = useNavigate();
   const [employeeData, setEmployeeData] = useState({
     name: "",
@@ -20,7 +24,7 @@ const EditEmployee = () => {
     const fetchEmployeeData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/employee/employees/${employeeId}`
+          `http://localhost:4000/employee/employee_s/${employeeId}`
         );
         setEmployeeData(response.data);
       } catch (error) {
@@ -67,7 +71,7 @@ const EditEmployee = () => {
                 className="addemp form-control"
                 id="inputName"
                 name="name"
-                placeholder="Enter Name"
+                placeholder={employeeData.name}
                 required
                 value={employeeData.name}
                 onChange={handleInputChange}

@@ -11,23 +11,25 @@ import "react-toastify/dist/ReactToastify.css";
 import Update from "./update.jsx";
 
 const Category = () => {
-  const [categories, setCategories] = useState([]);
-  const [allCategories, setAllCategories] = useState(null);
+
+  const [jobdescriptions, setjobdescriptions] = useState([]);
+  const [alljobdescriptions, setalljobdescriptions] = useState(null);
   // Add editingIndex state
-  const [cname, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [categoryId, setSelectedId] = useState(null);
+  const [jobdesctitle, setjobdesctitle] = useState("");
+  const [jobdescDescription, setjobdescDescription] = useState("");
+  const [jobdescrequiredSkills, setjobdescrequiredSkills] = useState([]);
+  const [jobdescriptionId, setSelectedId] = useState(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   //get categories
-  const fetchCategories = async () => {
+  const fetchjobdecs = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/category/category`
+        `http://localhost:4000/Jobdescription/JobDescriptions`
       );
-      if (response.data.categories && response.data.categories.length > 0) {
-        setAllCategories(response.data.categories);
-        setCategories(response.data.categories);
+      if (response.data.JobDescriptions && response.data.JobDescriptions.length > 0) {
+        setalljobdescriptions(response.data.JobDescriptions);
+        setjobdescriptions(response.data.JobDescriptions);
       } else {
         console.log("No categories found or empty response.");
       }
@@ -37,22 +39,22 @@ const Category = () => {
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, [allCategories]);
+    fetchjobdecs();
+  }, [alljobdescriptions]);
   // Check if categories is defined before mapping
-  const categoriesList = categories || [];
+  const jobdescriptionsList = jobdescriptions || [];
 
-  const handleDelete = async (categoryId) => {
+  const handleDelete = async (jobdescriptionId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/category/delete_category/${categoryId}`
+        `http://localhost:4000/Jobdescription/delete_JobDescription/${jobdescriptionId}`
       );
 
       if (response.data.Status) {
-        const updatedCategories = categories.filter(
-          (category) => category._id !== categoryId
+        const updatedjobdescriptions = jobdescriptions.filter(
+          (jobdescription) => jobdescription._id !== jobdescriptionId
         );
-        setCategories(updatedCategories);
+        setjobdescriptions(updatedjobdescriptions);
         toast.success("Deleted successfully!");
       } else {
         console.error("Failed to delete category");
@@ -65,45 +67,50 @@ const Category = () => {
   };
 
   //for update
-  const handleOpenUpdateModal = (categoryId, cname, description) => {
-    setSelectedId(categoryId);
-    setName(cname);
-    setDescription(description);
+  const handleOpenUpdateModal = (jobdescriptionId,jobdesctitle , jobdescDescription,jobdescrequiredSkills) => {
+    setSelectedId(jobdescriptionId);
+    setjobdesctitle(jobdesctitle);
+    setjobdescDescription(jobdescDescription);
+    setjobdescrequiredSkills(jobdescrequiredSkills);
     setIsUpdateModalOpen(true);
   };
 
   const handleCloseUpdateModal = () => {
     setSelectedId(null);
-    setName("");
-    setDescription("");
+    setjobdesctitle("");
+    setjobdescDescription("");
+    setjobdescrequiredSkills([]);
     setIsUpdateModalOpen(false);
   };
 
   //update
   const handleUpdate = async (
-    categoryId,
-    updatedCatName,
-    updatedDescription
+    jobdescriptionId,
+    updatedTitle,
+    updatedDescription,
+    updatedskills
   ) => {
     try {
       const response = await axios.put(
-        `http://localhost:4000/category/update_category/${categoryId}`,
+        `http://localhost:4000/Jobdescription/update_JobDescription/${jobdescriptionId}`,
         {
-          name: updatedCatName,
+          title: updatedTitle,
           description: updatedDescription,
+          requiredSkills: updatedskills
         }
       );
-      if (response.data.updatedCategory) {
-        const updatedCategories = categories.map((category) =>
-          category._id === categoryId
+      if (response.data.updatedjobdescription) {
+        const updatedjobdescriptions = jobdescriptionId.map((jobdescription) =>
+          jobdescription._id === jobdescriptionId
             ? {
-                ...category,
-                name: response.data.updatedCategory.name,
-                description: response.data.updatedCategory.description,
+                ...jobdescription,
+                title: response.data.updatedjobdescription.title,
+                description: response.data.updatedjobdescription.description,
+                requiredSkills: response.data.updatedskills.requiredSkills
               }
-            : category
+            : jobdescription
         );
-        setCategories(updatedCategories);
+        setjobdescDescription(updatedjobdescriptions);
         toast.success("Updated successfully!");
         handleCloseUpdateModal(); // Close the update modal
       } else {
@@ -121,54 +128,59 @@ const Category = () => {
         <div class="custom-container">
           <ToastContainer />
           <div className="catheader">
-            <h3>Category List</h3>
+            <h3> Jobdescription List</h3>
           </div>
           <div className="catcenter">
             <div class="custom-content">
               <div className="categorytask">
                 <Link to="/home/category/add" className="custom-btn btn-9">
-                  Add Category
+                  Add Jobdescription
                 </Link>
               </div>
             </div>
           </div>
-          {categoriesList.length > 0 ? (
+          {jobdescriptionsList.length > 0 ? (
             <div className="task-cards-container">
               <div className="task-cards">
-                {categoriesList.map((category) => (
-                  <div className="task-card" key={category._id}>
-                    <h3>{category.name}</h3>
-                    <p>{category.description}</p>
-                    <div className="button-container">
-                      <button
-                        title="Update"
-                        onClick={() =>
-                          handleOpenUpdateModal(
-                            category._id,
-                            category.name,
-                            category.description
-                          )
-                        }
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        title="Delete"
-                        onClick={() => handleDelete(category._id)}
-                      >
-                        <MdDeleteForever />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+              {jobdescriptionsList.map((jobdescription) => (
+  <div className="task-card" key={jobdescription._id}>
+    <h3>{jobdescription.title}</h3>
+    <p>{jobdescription.description}</p>
+    <h3>{jobdescription.skills}</h3>
+    <div className="button-container">
+      <button
+        title="Update"
+        onClick={() =>
+          handleOpenUpdateModal(
+            jobdescription._id,
+            jobdescription.title,
+            jobdescription.description,
+            jobdescription.skills
+          )
+        }
+      >
+        <FaRegEdit />
+      </button>
+      <button
+        title="Delete"
+        onClick={() => handleDelete(jobdescription._id)}
+      >
+        <MdDeleteForever />
+      </button>
+    </div>
+  </div>
+))}
+
                 {isUpdateModalOpen && (
-                  <Update
-                    categoryId={categoryId}
-                    onClose={handleCloseUpdateModal}
-                    onUpdate={handleUpdate}
-                    cname={cname}
-                    description={description}
-                  />
+                 <Update
+                 jobdescriptionId={jobdescriptionId}
+                 onClose={handleCloseUpdateModal}
+                 onUpdate={handleUpdate}
+                 title={jobdesctitle}
+                 description={jobdescDescription}
+                 skills={jobdescrequiredSkills}
+               />
+               
                 )}
               </div>
             </div>
@@ -176,7 +188,7 @@ const Category = () => {
             <div className="no-data-message">
               {/* <img src={noData} alt="" className="nodata" /> */}
               <p className="no-data-text">
-                No categories found. Add new categories to display in the list.
+                No jobdescDescription found. Add new categories to display in the list.
               </p>
             </div>
           )}

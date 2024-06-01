@@ -20,14 +20,6 @@ const employeeSchema = new mongoose.Schema({
     
   },
  
-  // categorys: {
-  //   type: String,
-    
-  // },
-  // category_id: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: "category",
-  // },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "signups",

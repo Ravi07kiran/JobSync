@@ -7,11 +7,13 @@ const Profile = () => {
   const [name, setUserName] = useState("");
   const [email, setUserEmail] = useState("");
   const [role, setUserRole] = useState("");
+  const [expereince, setUserExperience] = useState("");
 
   useEffect(() => {
     const storedName = sessionStorage.getItem("name");
     const storedEmail = sessionStorage.getItem("email");
     const storedRole = sessionStorage.getItem("role");
+    
 
     if (storedName) {
       setUserName(capitalizeFirstLetter(storedName));
@@ -22,6 +24,7 @@ const Profile = () => {
     if(storedRole){
       setUserRole(storedRole);
     }
+    
   }, []);
 
   // Function to capitalize the first letter of a string

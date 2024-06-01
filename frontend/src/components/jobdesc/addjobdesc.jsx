@@ -7,17 +7,29 @@ import "./addjobdesc.css";
 
 const AddCategory = () => {
   const navigate = useNavigate();
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryDescription, setCategoryDescription] = useState("");
+  const [jobdesctitle, setjobdesctitle] = useState("");
+  const [jobdescDescription, setjobdescDescription] = useState("");
+  const [jobdescrequiredSkills,setjobdescrequiredSkills]= useState([]);
+  // const [jobdesckeywords,setjobdesckeywords]=useState([]);
+
+  const handleSkillChange = (event) => {
+    const selectedSkill = event.target.value;
+    
+    if (!jobdescrequiredSkills.includes(selectedSkill)) {
+      setjobdescrequiredSkills([...jobdescrequiredSkills, selectedSkill]);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/category/add_category",
+        "http://localhost:4000/JobDescription/add_JobDescription",
         {
-          name: categoryName,
-          description: categoryDescription,
+          name: jobdesctitle,
+          description: jobdescDescription,
+          skills: jobdescrequiredSkills,
+          // keywords : jobdesckeywords,
         }
       );
       console.log(response.data);
@@ -25,6 +37,8 @@ const AddCategory = () => {
     } catch (error) {
       console.error(error);
       navigate("/home/category");
+
+      
     }
   };
 
@@ -36,7 +50,7 @@ const AddCategory = () => {
           <form className="addcatform" onSubmit={handleSubmit}>
             <div className="addcatgroup">
               <label htmlFor="name" className="form-label">
-                <strong>Name:</strong>
+                <strong>Title:</strong>
               </label>
               <input
                 type="text"
@@ -44,8 +58,8 @@ const AddCategory = () => {
                 id="name"
                 placeholder="Name"
                 required
-                value={categoryName}
-                onChange={(e) => setCategoryName(e.target.value)}
+                value={jobdesctitle}
+                onChange={(e) => setjobdesctitle(e.target.value)}
               />
             </div>
             <div className="addcatgroup">
@@ -55,13 +69,37 @@ const AddCategory = () => {
               <textarea
                 id="description"
                 className="addcat form-control custom-scrollbar"
-                placeholder="Category Description"
+                placeholder="Jobdescription Description"
                 required
-                value={categoryDescription}
-                onChange={(e) => setCategoryDescription(e.target.value)}
+                value={jobdescDescription}
+                onChange={(e) => setjobdescDescription(e.target.value)}
                 style={{ resize: "none" }}
               />
             </div>
+            <div className="addcatgroup">
+            <label htmlFor="skills"> Required skills:</label>
+            <select
+        id="skills"
+        name="skills"
+        multiple
+        onChange={handleSkillChange}
+        value={jobdescrequiredSkills}
+        
+      >
+        <option value="HTML">HTML</option>
+        <option value="CSS">CSS</option>
+        <option value="JavaScript">JavaScript</option>
+        <option value="React">React</option>
+        <option value="Node.js">Node.js</option>
+        <option value="Python">Python</option>
+        
+      </select>
+            </div>
+
+           
+           
+
+            
             <div className="addcatbtngroup">
               <button type="submit" className="cat-save">
                 Add

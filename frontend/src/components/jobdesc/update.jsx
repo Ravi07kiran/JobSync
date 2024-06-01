@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./update.css";
 
-const Update = ({ onClose, onUpdate, categoryId, cname, description }) => {
-  const [updatedName, setUpdatedName] = useState(cname);
+const Update = ({ onClose, onUpdate, jobdescriptionId, title, description }) => {
+  const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedDescription, setUpdatedDescription] = useState(description);
   const handleUpdate = () => {
-    onUpdate(categoryId, updatedName, updatedDescription);
+    onUpdate(jobdescriptionId, updatedTitle, updatedDescription);
     // Close the modal
     onClose();
   };
@@ -22,8 +22,8 @@ const Update = ({ onClose, onUpdate, categoryId, cname, description }) => {
           type="text"
           className="todo-input"
           placeholder="Category"
-          value={updatedName}
-          onChange={(e) => setUpdatedName(e.target.value)}
+          value={updatedTitle}
+          onChange={(e) => setUpdatedTitle(e.target.value)}
         />
         <textarea
           className="todo custom-scrollbar"

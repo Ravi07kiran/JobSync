@@ -111,11 +111,11 @@ router.get("/total_salary", async (req, res) => {
 //update employee
 router.put("/update_employee/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, email, password, address, salary, categorys } = req.body;
+  const { name, email, tier,experience } = req.body;
   try {
     const updatedEmployee = await employee.findByIdAndUpdate(
       id,
-      { name, email, password, address, salary, categorys },
+      { name, email, tier,experience },
       { new: true }
     );
     if (!updatedEmployee) {

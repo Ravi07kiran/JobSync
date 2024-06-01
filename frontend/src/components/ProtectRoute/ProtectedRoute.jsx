@@ -199,6 +199,12 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/Uploader"),
     },
     {
+      title: "Category",
+      path: "/home/category",
+      icon: <MdOutlineFormatListBulleted className="react-icon" />,
+      onClick: () => navigate("/home/category"),
+    },
+    {
       title: "Users",
       path: "/home/user",
       icon: <FaUserPlus className="react-icon" />,
@@ -209,12 +215,6 @@ const ProtectedRoute = ({ children }) => {
       path: "/home/employee",
       icon: <MdPeople className="react-icon" />,
       onClick: () => navigate("/home/employee"),
-    },
-    {
-      title: "Category",
-      path: "/home/category",
-      icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
     },
     
   ];
