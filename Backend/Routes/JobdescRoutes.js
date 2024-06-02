@@ -22,11 +22,16 @@ router.get("/JobDescriptions", async (req, res) => {
 router.post("/add_JobDescription", async (req, res) => {
   try {
     const { title, description, requiredSkills } = req.body;
+
+    // Check if title is present
+    if (!title) {
+      return res.status(400).json({ error: "Title is required" });
+    }
+
     const newJobDescription = new JobDescription({
       title,
       description,
       requiredSkills,
-      
     });
     await newJobDescription.save();
     res.status(200).json({ JobDescription: newJobDescription });
@@ -35,6 +40,7 @@ router.post("/add_JobDescription", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 // Delete JobDescription
 router.delete("/delete_JobDescription/:jobdescriptionId", async (req, res) => {

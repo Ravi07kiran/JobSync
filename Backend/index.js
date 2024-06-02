@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const JobdescRoutes = require("./routes/JobdescRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const mappRoutes = require("./routes/mapRoutes");
 const { default: mongoose } = require('mongoose');
 const bodyParser = require("body-parser");
 
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 app.use("/auth", authRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/Jobdescription", JobdescRoutes);
+app.use("/map",mappRoutes);
 app.use("/upload",uploadRoutes);
 
 mongoose.connect(URI)
