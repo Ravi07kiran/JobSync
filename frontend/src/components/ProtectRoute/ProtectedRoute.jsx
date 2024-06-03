@@ -91,10 +91,10 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/employee"),
     },
     {
-      title: "Category",
-      path: "/home/category",
+      title: "Jobdescription",
+      path: "/home/Jobdescription",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
+      onClick: () => navigate("/home/Jobdescription"),
     },
     {
       title: "Uploader",
@@ -126,10 +126,10 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/employee"),
     },
     {
-      title: "Category",
-      path: "/home/category",
+      title: "Jobdescription",
+      path: "/home/Jobdescription",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
+      onClick: () => navigate("/home/Jobdescription"),
     },
     {
       title: "Uploader",
@@ -176,12 +176,7 @@ const ProtectedRoute = ({ children }) => {
       icon: <MdPeople className="react-icon" />,
       onClick: () => navigate("/home/Uploader"),
     },
-    // {
-    //   title: "Category",
-    //   path: "/home/category",
-    //   icon: <MdOutlineFormatListBulleted className="react-icon" />,
-    //   onClick: () => navigate("/home/category"),
-    // },
+  
     
   ];
 
@@ -199,10 +194,10 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/Uploader"),
     },
     {
-      title: "Category",
-      path: "/home/category",
+      title: "Jobdescription",
+      path: "/home/Jobdescription",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
+      onClick: () => navigate("/home/Jobdescription"),
     },
     {
       title: "Users",
@@ -238,10 +233,10 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/employee"),
     },
     {
-      title: "Category",
-      path: "/home/category",
+      title: "Jobdescription",
+      path: "/home/Jobdescription",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
-      onClick: () => navigate("/home/category"),
+      onClick: () => navigate("/home/Jobdescription"),
     },
    
   ];

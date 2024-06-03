@@ -30,10 +30,10 @@ const AddCategory = () => {
         }
       );
       console.log(response.data);
-      navigate("/home/category");
+      navigate("/home/Jobdescription");
     } catch (error) {
       console.error(error);
-      navigate("/home/category");
+      navigate("/home/Jobdescription");
     }
   };
 
@@ -95,7 +95,7 @@ const AddCategory = () => {
               <button
                 type="button" // Changed type to "button" to prevent form submission on close
                 className="cat-close"
-                onClick={() => navigate("/home/category")}
+                onClick={() => navigate("/home/Jobdescription")}
               >
                 Close
               </button>

@@ -2,11 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .uploadCard {
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -18,6 +20,7 @@
   font-weight: 600;
   color: #333333;
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .uploadFileInput {
@@ -59,4 +62,52 @@
   color: #666666;
   margin-top: 24px;
   text-align: center;
+}
+
+/* Media Queries */
+
+@media (max-width: 768px) {
+  .uploadCard {
+    padding: 24px;
+  }
+
+  .uploadTitle {
+    font-size: 20px;
+  }
+
+  .uploadFileInput {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .uploadFileInput input[type="file"] {
+    margin-bottom: 12px;
+  }
+
+  .uploadFileInput button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .uploadCard {
+    padding: 16px;
+  }
+
+  .uploadTitle {
+    font-size: 18px;
+  }
+
+  .uploadFileInput {
+    padding: 8px 12px;
+  }
+
+  .uploadFileInput input[type="file"],
+  .uploadFileInput button {
+    font-size: 14px;
+  }
+
+  .uploadMessage {
+    font-size: 14px;
+  }
 }

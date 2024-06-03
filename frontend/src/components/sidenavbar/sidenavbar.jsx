@@ -28,20 +28,7 @@ const SideNavbar = () => {
       });
   };
 
-  // const fetchSalaryTotal = () => {
-  //   axios
-  //     .get(`https://localhost:4000/associate/total_salary`)
-  //     .then((response) => {
-  //       if (response.data.Status) {
-  //         setSalaryTotal(Number(response.data.Result));
-  //       } else {
-  //         console.error("Failed to fetch salary total");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error");
-  //     });
-  // };
+
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("id");
@@ -139,7 +126,6 @@ const SideNavbar = () => {
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>EmpID</th>
                     <th>Tire</th>
                     <th>Expirence</th>
                   </tr>
@@ -150,9 +136,9 @@ const SideNavbar = () => {
                       <tr key={e._id}>
                         <td>{e.name}</td>
                         <td>{e.email}</td>
-                        <td>{e.salary}</td>
-                        <td>{e.experience}</td>
                         <td>{e.tier}</td>
+                        <td>{e.experience}</td>
+                       
                       </tr>
                     ))
                   ) : (

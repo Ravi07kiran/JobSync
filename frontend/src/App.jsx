@@ -88,7 +88,7 @@ function App() {
           }
         />
         <Route
-          path="/home/category"
+          path="/home/Jobdescription"
           element={
             <ProtectedRoute>
               <Category />
@@ -104,7 +104,7 @@ function App() {
           }
         />
         <Route
-          path="/home/category/add"
+          path="/home/Jobdescription/add"
           element={
             <ProtectedRoute>
               <AddCategory />

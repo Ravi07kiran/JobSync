@@ -133,7 +133,7 @@ const Category = () => {
           <div className="catcenter">
             <div class="custom-content">
               <div className="categorytask">
-                <Link to="/home/category/add" className="custom-btn btn-9">
+                <Link to="/home/Jobdescription/add" className="custom-btn btn-9">
                   Add Jobdescription
                 </Link>
               </div>
