@@ -3,9 +3,7 @@ const router = express.Router();
 const employee = require("../model/employee");
 const userModel = require("../model/signups");
 
-
-//employee
-//get employees
+// Get employees
 router.get("/employees", async (req, res) => {
   try {
     const employees = await employee.find({});
@@ -20,7 +18,7 @@ router.get("/employees", async (req, res) => {
   }
 });
 
-//get a single employee by user ID and employee ID
+// Get a single employee by user ID and employee ID
 router.get("/employee_s/:employeeId", async (req, res) => {
   try {
     const employeeId = req.params.employeeId;
@@ -41,17 +39,18 @@ router.get("/employee_s/:employeeId", async (req, res) => {
       .json({ error: "Internal Server Error", details: error.message });
   }
 });
-//add employee
+
+// Add employee
 router.post("/add_employee", async (req, res) => {
   try {
-    const { name, email, experience, tier } = req.body;
+    const { employeeid, name, email, experience, tier, skills, location } = req.body;
 
     // Validate required fields
-    if (!name || !email || !experience || !tier) {
+    if (!employeeid || !name || !email || !experience || !tier  || !skills || !location) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const newEmployee = new employee({ name, email, experience, tier });
+    const newEmployee = new employee({ employeeid, name, email, experience, tier, skills, location });
     await newEmployee.save();
 
     res.status(200).json({ message: "Employee added successfully", employee: newEmployee });
@@ -61,8 +60,7 @@ router.post("/add_employee", async (req, res) => {
   }
 });
 
-
-//delete employee
+// Delete employee
 router.delete("/delete_employee/:id", async (req, res) => {
   try {
     const employeeId = req.params.id;
@@ -82,7 +80,8 @@ router.delete("/delete_employee/:id", async (req, res) => {
     res.status(500).json({ Status: false, Error: "Internal Server Error" });
   }
 });
-//employee count
+
+// Employee count
 router.get("/employee_count", async (req, res) => {
   try {
     const employeeCount = await employee.countDocuments({});
@@ -92,30 +91,15 @@ router.get("/employee_count", async (req, res) => {
     res.status(500).json({ Status: false, Error: "Internal Server Error" });
   }
 });
-//salary count
-router.get("/total_salary", async (req, res) => {
-  try {
-    const employees = await employee.find({});
 
-    if (employees.length > 0) {
-      const totalSalary = employees.reduce((acc, emp) => acc + emp.salary, 0);
-      res.json({ Status: true, Result: totalSalary });
-    } else {
-      res.status(404).json({ Status: false, Error: "No employees found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ Status: false, Error: "Internal Server Error" });
-  }
-});
-//update employee
+// Update employee
 router.put("/update_employee/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, email, tier,experience } = req.body;
+  const { employeeid, name, email, tier, experience, skills, location } = req.body;
   try {
     const updatedEmployee = await employee.findByIdAndUpdate(
       id,
-      { name, email, tier,experience },
+      { employeeid, name, email, tier, experience, skills, location },
       { new: true }
     );
     if (!updatedEmployee) {

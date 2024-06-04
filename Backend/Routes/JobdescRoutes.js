@@ -87,4 +87,22 @@ router.put("/update_JobDescription/:jobdescriptionId", async (req, res) => {
   }
 });
 
+
+// Get mapped employees for a JobDescription
+router.get("/jobdescription/:id/mapped_employees", async (req, res) => {
+  try {
+    const jobDescription = await JobDescription.findById(req.params.id).populate('matchedEmployees');
+    if (!jobDescription) {
+      return res.status(404).json({ message: "JobDescription not found" });
+    }
+    res.status(200).json({ mappedEmployees: jobDescription.matchedEmployees });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+module.exports = router;
+
+
 module.exports = router;

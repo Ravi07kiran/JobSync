@@ -132,6 +132,12 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/Jobdescription"),
     },
     {
+      title:"Mapper",
+      path:"/home/mapper",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/mapper"),
+    },
+    {
       title: "Uploader",
       path: "/home/Uploader",
       icon: <MdPeople className="react-icon" />,
@@ -159,12 +165,6 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home"),
     },
     {
-      title: "Users",
-      path: "/home/user",
-      icon: <FaUserPlus className="react-icon" />,
-      onClick: () => navigate("/home/user"),
-    },
-    {
       title: "Employees",
       path: "/home/employee",
       icon: <MdPeople className="react-icon" />,
@@ -176,8 +176,12 @@ const ProtectedRoute = ({ children }) => {
       icon: <MdPeople className="react-icon" />,
       onClick: () => navigate("/home/Uploader"),
     },
-  
-    
+    {
+      title: "Jobdescription",
+      path: "/home/Jobdescription",
+      icon: <MdOutlineFormatListBulleted className="react-icon" />,
+      onClick: () => navigate("/home/Jobdescription"),
+    },
   ];
 
   const HRuser = [
@@ -198,6 +202,12 @@ const ProtectedRoute = ({ children }) => {
       path: "/home/Jobdescription",
       icon: <MdOutlineFormatListBulleted className="react-icon" />,
       onClick: () => navigate("/home/Jobdescription"),
+    },
+    {
+      title:"Mapper",
+      path:"/home/Mapper",
+      icon: <MdPeople className="react-icon" />,
+      onClick: () => navigate("/home/Mapper"),
     },
     {
       title: "Users",

@@ -20,6 +20,7 @@ import { authActions } from "./store";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
 import Choose from "./components/choose/choose";
 import Uploader from "./components/uploader/uploader";
+import Mapper from "./components/mapper/mapper";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgotpass" element={<Forgot />}></Route>
         <Route path="/Uploader" element={<Uploader/>}></Route>
+        <Route path="/mapper" element={<Mapper/>}></Route>
         <Route path="/resetpass/:id/:token" element={<Reset />}></Route>
         <Route
           path="/home"
@@ -102,6 +104,14 @@ function App() {
               <Uploader />
             </ProtectedRoute>
           }
+        />
+        <Route
+        path="/home/mapper"
+        element={
+          <ProtectedRoute>
+            <Mapper />
+          </ProtectedRoute>
+        }
         />
         <Route
           path="/home/Jobdescription/add"

@@ -6,16 +6,15 @@ import "./addassociates.css";
 import "./editassociate.css";
 
 const EditEmployee = () => {
-
-  
- 
-
   const navigate = useNavigate();
   const [employeeData, setEmployeeData] = useState({
+    employeeid: "",
     name: "",
     email: "",
+    tier: "",
     experience: "",
-    tier: ""
+    skills: [],
+    location: ""
   });
 
   const { employeeId } = useParams();
@@ -43,6 +42,24 @@ const EditEmployee = () => {
     }));
   };
 
+  const handleSkillChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedSkills = employeeData.skills.map((skill, i) => 
+      i === index ? { ...skill, [name]: value } : skill
+    );
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      skills: updatedSkills,
+    }));
+  };
+
+  const addSkill = () => {
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      skills: [...prevData.skills, { name: "", proficiency: "" }],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,6 +80,20 @@ const EditEmployee = () => {
           <h3 className="text-center">Edit Employee</h3>
           <form className="addempform" onSubmit={handleSubmit}>
             <div className="addempgroup">
+              <label htmlFor="inputEmployeeId" className="form-label">
+                Employee ID
+              </label>
+              <input
+                type="text"
+                className="addemp form-control"
+                id="inputEmployeeId"
+                name="employeeid"
+                required
+                value={employeeData.employeeid}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="addempgroup">
               <label htmlFor="inputName" className="form-label">
                 Name
               </label>
@@ -71,7 +102,6 @@ const EditEmployee = () => {
                 className="addemp form-control"
                 id="inputName"
                 name="name"
-                placeholder={employeeData.name}
                 required
                 value={employeeData.name}
                 onChange={handleInputChange}
@@ -86,7 +116,6 @@ const EditEmployee = () => {
                 className="addemp form-control"
                 id="inputEmail4"
                 name="email"
-                placeholder="Enter Email"
                 required
                 autoComplete="off"
                 value={employeeData.email}
@@ -102,7 +131,6 @@ const EditEmployee = () => {
                 className="addemp form-control"
                 id="inputTier"
                 name="tier"
-                placeholder="Enter Tier"
                 required
                 autoComplete="off"
                 value={employeeData.tier}
@@ -118,14 +146,56 @@ const EditEmployee = () => {
                 className="addemp form-control"
                 id="inputExperience"
                 name="experience"
-                placeholder="Enter Experience"
                 required
                 autoComplete="off"
                 value={employeeData.experience}
                 onChange={handleInputChange}
               />
             </div>
+            <div className="addempgroup">
+              <label htmlFor="inputLocation" className="form-label">
+                Location
+              </label>
+              <input
+                type="text"
+                className="addemp form-control"
+                id="inputLocation"
+                name="location"
+                required
+                value={employeeData.location}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="addempgroup">
+              <label className="form-label">Skills</label>
+              {employeeData.skills.map((skill, index) => (
+                <div key={index} className="skill-group">
+                  <input
+                    type="text"
+                    className="addemp form-control skill-name"
+                    placeholder="Skill Name"
+                    name="name"
+                    value={skill.name}
+                    onChange={(e) => handleSkillChange(index, e)}
+                  />
+                  <input
+                    type="number"
+                    className="addemp form-control skill-proficiency"
+                    placeholder="Proficiency"
+                    name="proficiency"
+                    value={skill.proficiency}
+                    min="1"
+                    max="5"
+                    onChange={(e) => handleSkillChange(index, e)}
+                  />
+                </div>
+              ))}
+              
+            </div>
             <div className="editempgroup">
+            <button type="button" className="editemp-save" onClick={addSkill}>
+                Add Skill
+              </button>
               <button type="submit" className="editemp-save">
                 Save
               </button>

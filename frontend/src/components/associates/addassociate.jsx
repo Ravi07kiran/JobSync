@@ -6,25 +6,54 @@ import "./addassociates.css";
 const AddEmployee = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [employeeData, setEmployeeData] = useState({
+    employeeid: "",
+    name: "",
+    email: "",
+    tier: "",
+    experience: "",
+    skills: [{ name: "", proficiency: "" }],
+    location: ""
+  });
 
-  // Add employee
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSkillChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedSkills = employeeData.skills.map((skill, i) =>
+      i === index ? { ...skill, [name]: value } : skill
+    );
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      skills: updatedSkills,
+    }));
+  };
+
+  const addSkill = () => {
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      skills: [...prevData.skills, { name: "", proficiency: "" }],
+    }));
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
-    
-    const formData = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      tier: e.target.tier.value,
-      experience: e.target.experience.value
-    };
-  
     try {
-      const response = await axios.post("http://localhost:4000/employee/add_employee", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      
+      const response = await axios.post(
+        "http://localhost:4000/employee/add_employee",
+        employeeData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log("Response:", response.data);
       navigate("/home/employee");
     } catch (error) {
@@ -32,7 +61,6 @@ const AddEmployee = () => {
       setErrorMessage("Failed to add employee. Please try again later.");
     }
   };
-  
 
   return (
     <div>
@@ -42,6 +70,20 @@ const AddEmployee = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           <form className="addempform" onSubmit={submitForm}>
             <div className="addempgroup">
+              <label htmlFor="inputEmployeeId" className="form-label">
+                Employee ID
+              </label>
+              <input
+                type="text"
+                className="addemp form-control"
+                id="inputEmployeeId"
+                name="employeeid"
+                required
+                value={employeeData.employeeid}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="addempgroup">
               <label htmlFor="inputName" className="form-label">Name</label>
               <input
                 type="text"
@@ -50,6 +92,8 @@ const AddEmployee = () => {
                 name="name"
                 placeholder="Enter Name"
                 required
+                value={employeeData.name}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
@@ -62,6 +106,8 @@ const AddEmployee = () => {
                 placeholder="Enter Email"
                 required
                 autoComplete="off"
+                value={employeeData.email}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
@@ -74,6 +120,8 @@ const AddEmployee = () => {
                 placeholder="Enter Tier 0-5"
                 required
                 autoComplete="off"
+                value={employeeData.tier}
+                onChange={handleInputChange}
               />
             </div>
             <div className="addempgroup">
@@ -86,9 +134,54 @@ const AddEmployee = () => {
                 placeholder="Enter in years"
                 required
                 autoComplete="off"
+                value={employeeData.experience}
+                onChange={handleInputChange}
               />
             </div>
+            <div className="addempgroup">
+              <label htmlFor="inputLocation" className="form-label">
+                Location
+              </label>
+              <input
+                type="text"
+                className="addemp form-control"
+                id="inputLocation"
+                name="location"
+                placeholder="Enter Location"
+                required
+                value={employeeData.location}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="addempgroup">
+              <label className="form-label">Skills</label>
+              {employeeData.skills.map((skill, index) => (
+                <div key={index} className="skill-group">
+                  <input
+                    type="text"
+                    className="addemp form-control skill-name"
+                    placeholder="Skill Name"
+                    name="name"
+                    value={skill.name}
+                    onChange={(e) => handleSkillChange(index, e)}
+                  />
+                  <input
+                    type="number"
+                    className="addemp form-control skill-proficiency"
+                    placeholder="Proficiency (1-5)"
+                    name="proficiency"
+                    value={skill.proficiency}
+                    min="1"
+                    max="5"
+                    onChange={(e) => handleSkillChange(index, e)}
+                  />
+                </div>
+              ))}
+            </div>
             <div className="editempgroup">
+            <button type="button" className="editemp-save" onClick={addSkill}>
+                Add Skill
+              </button>
               <button type="submit" className="editemp-save">Add</button>
               <button
                 type="button"

@@ -6,11 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Employees = () => {
-  const [employees, setEmployee] = useState([]);
-  const [allEmployees, setAllEmployees] = useState(null);
+  const [employees, setEmployees] = useState([]);
 
   // Get employees
-  const fetchEmployee = async () => {
+  const fetchEmployees = async () => {
     try {
       const response = await axios.get("http://localhost:4000/employee/employees", {
         headers: {
@@ -18,8 +17,7 @@ const Employees = () => {
         },
       });
       if (response.data.employees && response.data.employees.length > 0) {
-        setAllEmployees(response.data.employees);
-        setEmployee(response.data.employees);
+        setEmployees(response.data.employees);
       } else {
         console.log("No employees found or empty response.");
       }
@@ -29,7 +27,7 @@ const Employees = () => {
   };
 
   useEffect(() => {
-    fetchEmployee();
+    fetchEmployees();
   }, []);
 
   // Delete employee
@@ -41,7 +39,7 @@ const Employees = () => {
 
       if (response.data.Status) {
         const updatedEmployees = employees.filter((e) => e._id !== employeeId);
-        setEmployee(updatedEmployees);
+        setEmployees(updatedEmployees);
         toast.success("Deleted successfully!");
       } else {
         alert(response.data.Error);
@@ -58,7 +56,7 @@ const Employees = () => {
       <div className="empcontainer">
         <ToastContainer />
         <div className="empheader">
-          <h3>Employee List</h3>
+          <h3>Employees</h3>
         </div>
         <div className="empcenter">
           <div className="empcustom-content">
@@ -73,24 +71,17 @@ const Employees = () => {
           <div className="employee-card-container">
             {employees.map((e) => (
               <div className="employee-card" key={e._id}>
-                <h4>{e.name}</h4>
+                <h4>EMPid:{e.employeeid}</h4>
+                <p>Name: {e.name}</p>
                 <p>Email: {e.email}</p>
                 <p>Tier: {e.tier}</p>
-                <p>Experience: {e.experience}</p>
-                <div
-                  className="employee-card-actions"
-                  style={{ justifyContent: "flex-end" }}
-                >
-                  <Link
-                    to={`/home/employee/edit/${e._id}`}
-                    className="customedit btn-sm me-2"
-                  >
+                <p>Experience: {e.experience} years</p>
+              
+                <div className="employee-card-actions" style={{ justifyContent: "flex-end" }}>
+                  <Link to={`/home/employee/edit/${e._id}`} className="customedit btn-sm me-2">
                     Edit
                   </Link>
-                  <button
-                    className="customdelete btn-sm"
-                    onClick={() => deleteEmployee(e._id)}
-                  >
+                  <button className="customdelete btn-sm" onClick={() => deleteEmployee(e._id)}>
                     Delete
                   </button>
                 </div>
@@ -99,9 +90,7 @@ const Employees = () => {
           </div>
         ) : (
           <div className="no-data-message">
-            <p className="no-data-text">
-              No employees found. Add new employees to display in the list.
-            </p>
+            <p className="no-data-text">No employees found. Add new employees to display in the list.</p>
           </div>
         )}
       </div>
