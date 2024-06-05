@@ -21,18 +21,21 @@ router.get("/JobDescriptions", async (req, res) => {
 // Add JobDescription
 router.post("/add_JobDescription", async (req, res) => {
   try {
-    const { title, description, requiredSkills } = req.body;
+    const { position, job_location, job_Id, description, requiredSkills, recruiter_name, recruiter_email } = req.body;
 
-    // Check if title is present
-    if (!title) {
-      return res.status(400).json({ error: "Title is required" });
-    }
+
+    // const skillsArray = requiredSkills.split(",").map(skill => skill.trim());
 
     const newJobDescription = new JobDescription({
-      title,
+      position,
+      job_location,
+      job_Id,
       description,
-      requiredSkills,
+      requiredSkills: requiredSkills,
+      recruiter_Name: recruiter_name,
+      recruiter_Email: recruiter_email
     });
+    
     await newJobDescription.save();
     res.status(200).json({ JobDescription: newJobDescription });
   } catch (error) {
@@ -64,26 +67,30 @@ router.delete("/delete_JobDescription/:jobdescriptionId", async (req, res) => {
   }
 });
 
-// Update JobDescription
-router.put("/update_JobDescription/:jobdescriptionId", async (req, res) => {
+router.put('/update_JobDescription/:jobdescriptionId', async (req, res) => {
   const { jobdescriptionId } = req.params;
-  const { title, description, requiredSkills } = req.body;
+  const updateData = req.body;
 
   try {
+    // Ensure requiredSkills is an array of strings
+    if (updateData.requiredSkills) {
+      updateData.requiredSkills = updateData.requiredSkills.map(skill => skill.value || skill);
+    }
+
     const updatedJobDescription = await JobDescription.findByIdAndUpdate(
       jobdescriptionId,
-      { title, description, requiredSkills },
+      { $set: updateData },
       { new: true }
     );
 
     if (!updatedJobDescription) {
-      return res.status(404).json({ message: "JobDescription not found" });
+      return res.status(404).json({ message: 'JobDescription not found' });
     }
 
     res.status(200).json({ updatedJobDescription });
   } catch (error) {
-    console.error("Error updating JobDescription:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error('Error updating JobDescription:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
@@ -101,8 +108,5 @@ router.get("/jobdescription/:id/mapped_employees", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-module.exports = router;
-
 
 module.exports = router;

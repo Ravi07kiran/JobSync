@@ -3,7 +3,6 @@ import axios from "axios";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { Link } from "react-router-dom";
-// import noData from "../img/nodata.png";
 import "../sidenavbar/sidenavbar.css";
 import "./jobdesc.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,37 +10,38 @@ import "react-toastify/dist/ReactToastify.css";
 import Update from "./update.jsx";
 
 const Category = () => {
-
-  const [jobdescriptions, setjobdescriptions] = useState([]);
-  const [alljobdescriptions, setalljobdescriptions] = useState(null);
-  // Add editingIndex state
-  const [jobdesctitle, setjobdesctitle] = useState("");
-  const [jobdescDescription, setjobdescDescription] = useState("");
-  const [jobdescrequiredSkills, setjobdescrequiredSkills] = useState([]);
+  const [jobdescriptions, setJobdescriptions] = useState([]);
+  const [allJobdescriptions, setAllJobdescriptions] = useState(null);
+  const [jobdescPosition, setJobdescPosition] = useState("");
+  const [jobdescLocation, setJobdescLocation] = useState("");
+  const [jobdescId, setJobdescId] = useState("");
+  const [jobdescDescription, setJobdescDescription] = useState("");
+  const [jobdescRequiredSkills, setJobdescRequiredSkills] = useState([]);
+  const [jobdescRecruiterName, setJobdescRecruiterName] = useState("");
+  const [jobdescRecruiterMail, setJobdescRecruiterMail] = useState("");
   const [jobdescriptionId, setSelectedId] = useState(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
-  //get categories
-  const fetchjobdecs = async () => {
+  const fetchJobdescs = async () => {
     try {
       const response = await axios.get(
         `http://localhost:4000/Jobdescription/JobDescriptions`
       );
       if (response.data.JobDescriptions && response.data.JobDescriptions.length > 0) {
-        setalljobdescriptions(response.data.JobDescriptions);
-        setjobdescriptions(response.data.JobDescriptions);
+        setAllJobdescriptions(response.data.JobDescriptions);
+        setJobdescriptions(response.data.JobDescriptions);
       } else {
         console.log("No categories found or empty response.");
       }
     } catch (error) {
-      console.error("Error");
+      console.error("Error fetching job descriptions", error);
     }
   };
 
   useEffect(() => {
-    fetchjobdecs();
-  }, [alljobdescriptions]);
-  // Check if categories is defined before mapping
+    fetchJobdescs();
+  }, [allJobdescriptions]);
+
   const jobdescriptionsList = jobdescriptions || [];
 
   const handleDelete = async (jobdescriptionId) => {
@@ -51,10 +51,10 @@ const Category = () => {
       );
 
       if (response.data.Status) {
-        const updatedjobdescriptions = jobdescriptions.filter(
+        const updatedJobdescriptions = jobdescriptions.filter(
           (jobdescription) => jobdescription._id !== jobdescriptionId
         );
-        setjobdescriptions(updatedjobdescriptions);
+        setJobdescriptions(updatedJobdescriptions);
         toast.success("Deleted successfully!");
       } else {
         console.error("Failed to delete category");
@@ -66,55 +66,77 @@ const Category = () => {
     }
   };
 
-  //for update
-  const handleOpenUpdateModal = (jobdescriptionId,jobdesctitle , jobdescDescription,jobdescrequiredSkills) => {
-    setSelectedId(jobdescriptionId);
-    setjobdesctitle(jobdesctitle);
-    setjobdescDescription(jobdescDescription);
-    setjobdescrequiredSkills(jobdescrequiredSkills);
+  const handleOpenUpdateModal = (jobdescription = {}) => {
+    const {
+      _id = '',
+      position = '',
+      job_location = '',
+      job_Id = '',
+      description = '',
+      requiredSkills = [],
+      recruiter_name = '',
+      recruiter_email = '',
+    } = jobdescription;
+
+    setSelectedId(_id);
+    setJobdescPosition(position);
+    setJobdescLocation(job_location);
+    setJobdescId(job_Id);
+    setJobdescDescription(description);
+    setJobdescRequiredSkills(requiredSkills.map((skill) => ({ value: skill, label: skill })));
+    setJobdescRecruiterName(recruiter_name);
+    setJobdescRecruiterMail(recruiter_email);
     setIsUpdateModalOpen(true);
   };
 
   const handleCloseUpdateModal = () => {
     setSelectedId(null);
-    setjobdesctitle("");
-    setjobdescDescription("");
-    setjobdescrequiredSkills([]);
+    setJobdescPosition('');
+    setJobdescLocation('');
+    setJobdescId('');
+    setJobdescDescription('');
+    setJobdescRequiredSkills([]);
+    setJobdescRecruiterName('');
+    setJobdescRecruiterMail('');
     setIsUpdateModalOpen(false);
   };
 
-  //update
   const handleUpdate = async (
     jobdescriptionId,
-    updatedTitle,
+    updatedPosition,
+    updatedJobLocation,
+    updatedJobId,
     updatedDescription,
-    updatedskills
+    updatedSkills,
+    updatedRecruiterName,
+    updatedRecruiterEmail
   ) => {
     try {
       const response = await axios.put(
         `http://localhost:4000/Jobdescription/update_JobDescription/${jobdescriptionId}`,
         {
-          title: updatedTitle,
+          position: updatedPosition,
+          job_location: updatedJobLocation,
+          job_Id: updatedJobId,
           description: updatedDescription,
-          requiredSkills: updatedskills
+          requiredSkills: updatedSkills.map(skill => skill.value),
+          recruiter_name: updatedRecruiterName,
+          recruiter_email: updatedRecruiterEmail
         }
       );
-      if (response.data.updatedjobdescription) {
-        const updatedjobdescriptions = jobdescriptionId.map((jobdescription) =>
+      console.log('Server response:', response.data);
+
+      if (response.data.updatedJobDescription) {
+        const updatedJobDescriptions = jobdescriptions.map(jobdescription =>
           jobdescription._id === jobdescriptionId
-            ? {
-                ...jobdescription,
-                title: response.data.updatedjobdescription.title,
-                description: response.data.updatedjobdescription.description,
-                requiredSkills: response.data.updatedskills.requiredSkills
-              }
+            ? response.data.updatedJobDescription
             : jobdescription
         );
-        setjobdescDescription(updatedjobdescriptions);
+        setJobdescriptions(updatedJobDescriptions);
         toast.success("Updated successfully!");
-        handleCloseUpdateModal(); // Close the update modal
+        handleCloseUpdateModal();
       } else {
-        toast.success("Updated successfully!");
+        toast.error("Error in updating. Please try again.");
       }
     } catch (error) {
       console.error(error);
@@ -124,75 +146,75 @@ const Category = () => {
 
   return (
     <div>
-      <div>
-        <div class="custom-container">
-          <ToastContainer />
-          <div className="catheader">
-            <h3> Jobdescription List</h3>
-          </div>
-          <div className="catcenter">
-            <div class="custom-content">
-              <div className="categorytask">
-                <Link to="/home/Jobdescription/add" className="custom-btn btn-9">
-                  Add Jobdescription
-                </Link>
-              </div>
-            </div>
-          </div>
-          {jobdescriptionsList.length > 0 ? (
-            <div className="task-cards-container">
-              <div className="task-cards">
-              {jobdescriptionsList.map((jobdescription) => (
-  <div className="task-card" key={jobdescription._id}>
-    <h3>{jobdescription.title}</h3>
-    <p>{jobdescription.description}</p>
-    <h3>{jobdescription.skills}</h3>
-    <div className="button-container">
-      <button
-        title="Update"
-        onClick={() =>
-          handleOpenUpdateModal(
-            jobdescription._id,
-            jobdescription.title,
-            jobdescription.description,
-            jobdescription.skills
-          )
-        }
-      >
-        <FaRegEdit />
-      </button>
-      <button
-        title="Delete"
-        onClick={() => handleDelete(jobdescription._id)}
-      >
-        <MdDeleteForever />
-      </button>
-    </div>
-  </div>
-))}
-
-                {isUpdateModalOpen && (
-                 <Update
-                 jobdescriptionId={jobdescriptionId}
-                 onClose={handleCloseUpdateModal}
-                 onUpdate={handleUpdate}
-                 title={jobdesctitle}
-                 description={jobdescDescription}
-                 skills={jobdescrequiredSkills}
-               />
-               
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="no-data-message">
-              {/* <img src={noData} alt="" className="nodata" /> */}
-              <p className="no-data-text">
-                No jobdescDescription found. Add new categories to display in the list.
-              </p>
-            </div>
-          )}
+      <div className="custom-container">
+        <ToastContainer />
+        <div className="catheader">
+          <h3>Jobdescription List</h3>
         </div>
+        <div className="catcenter">
+          <div className="custom-content">
+            <div className="categorytask">
+              <Link to="/home/Jobdescription/add" className="custom-btn btn-9">
+                Add Jobdescription
+              </Link>
+            </div>
+          </div>
+        </div>
+        {jobdescriptionsList.length > 0 ? (
+          <div className="task-cards-container">
+            <div className="task-cards">
+              {jobdescriptionsList.map((jobdescription) => (
+                <div className="task-card" key={jobdescription._id}>
+                  <h3>{jobdescription.position}</h3>
+                  <p>{jobdescription.job_location}</p>
+                  <p>{jobdescription.job_Id}</p>
+                  <p>{jobdescription.description}</p>
+                  <h3>{jobdescription.requiredSkills?.map(skill => skill.label).join(', ')}</h3>
+                  <p>{jobdescription.recruiter_name}</p>
+                  <p>{jobdescription.recruiter_email}</p>
+                  <div className="button-container">
+                    <button
+                      title="Update"
+                      onClick={() =>
+                        handleOpenUpdateModal(jobdescription)
+                      }
+                    >
+                      <FaRegEdit />
+                    </button>
+                    <button
+                      title="Delete"
+                      onClick={() => handleDelete(jobdescription._id)}
+                    >
+                      <MdDeleteForever />
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              {isUpdateModalOpen && (
+                <Update
+                  jobdescriptionId={jobdescriptionId}
+                  onClose={handleCloseUpdateModal}
+                  onUpdate={handleUpdate}
+                  position={jobdescPosition}
+                  job_location={jobdescLocation}
+                  job_Id={jobdescId}
+                  description={jobdescDescription}
+                  skills={jobdescRequiredSkills}
+                  recruiter_name={jobdescRecruiterName}
+                  recruiter_email={jobdescRecruiterMail}
+                />
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="no-data-message">
+            {/* <img src={noData} alt="" className="nodata" /> */}
+            <p className="no-data-text">
+              No jobdescDescription found. Add new categories to display in the list.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

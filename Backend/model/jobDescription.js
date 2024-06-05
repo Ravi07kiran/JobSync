@@ -1,28 +1,33 @@
 const mongoose = require('mongoose');
 const JobDescriptionSchema = new mongoose.Schema({
-  jdid:{
+  position:{
    type: String,
    required : true,
   },
-  title: {
+  job_location: {
     type: String,
     required: true,
   },
-
+  job_Id: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
   },
-
-  location:{
+  requiredSkills: [{
+    value: String,
+    label: String
+  }],
+  recruiter_Name:{
     type:String,
     required: true,
   },
-
-  requiredSkills: [{
-    type: String,
+  recruiter_Email:{
+    type:String,
     required: true,
-  }],
+  },
 
   matchedEmployees: [{
     type: mongoose.Schema.Types.ObjectId,
