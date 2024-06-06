@@ -7,9 +7,7 @@ import "../sidenavbar/sidenavbar.css";
 import "./jobdesc.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Update from "./update.jsx";
-
-const Category = () => {
+import Update from "./update.jsx";const Category = () => {
   const [jobdescriptions, setJobdescriptions] = useState([]);
   const [allJobdescriptions, setAllJobdescriptions] = useState(null);
   const [jobdescPosition, setJobdescPosition] = useState("");
@@ -165,13 +163,16 @@ const Category = () => {
             <div className="task-cards">
               {jobdescriptionsList.map((jobdescription) => (
                 <div className="task-card" key={jobdescription._id}>
-                  <h3>{jobdescription.position}</h3>
+                  <h4>{jobdescription.position}</h4>
                   <p>{jobdescription.job_location}</p>
                   <p>{jobdescription.job_Id}</p>
-                  <p>{jobdescription.description}</p>
-                  <h3>{jobdescription.requiredSkills?.map(skill => skill.label).join(', ')}</h3>
-                  <p>{jobdescription.recruiter_name}</p>
-                  <p>{jobdescription.recruiter_email}</p>
+                  <p>
+                    {jobdescription.requiredSkills?.length > 0 ? (
+                      jobdescription.requiredSkills.join(', ')
+                    ) : (
+                      <span>No skills Mentioned</span>
+                    )}
+                  </p>
                   <div className="button-container">
                     <button
                       title="Update"

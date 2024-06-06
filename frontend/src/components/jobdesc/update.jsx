@@ -83,7 +83,7 @@ const Update = ({
        <Select
             id="skills"
             name="skills"
-            options={updatedSkills} 
+            options={options} 
             onChange={handleChange}
             value={updatedSkills}
             isMulti

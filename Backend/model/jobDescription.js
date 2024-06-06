@@ -17,14 +17,14 @@ const JobDescriptionSchema = new mongoose.Schema({
     required: true,
   },
   requiredSkills: [{
-    value: String,
-    label: String
+    type:[String],
+    required: true, 
   }],
-  recruiter_Name:{
+  recruiter_name:{
     type:String,
     required: true,
   },
-  recruiter_Email:{
+  recruiter_email:{
     type:String,
     required: true,
   },

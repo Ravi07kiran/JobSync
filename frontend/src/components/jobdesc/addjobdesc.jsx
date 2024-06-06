@@ -31,6 +31,7 @@ const AddCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const skillsArray = jobdescrequiredSkills.map(skill => skill.value);
       const response = await axios.post(
         "http://localhost:4000/JobDescription/add_JobDescription",
         {
@@ -38,9 +39,9 @@ const AddCategory = () => {
           job_location:jobdesclocation,
           job_Id: jobdescId,
           description: jobdescdescription,
-          requiredSkills: jobdescrequiredSkills,
+          requiredSkills: skillsArray,
           recruiter_name:jobdescrecruitername,
-          recruiter_email:jobdescrecruitermail
+          recruiter_email:jobdescrecruitermail,
         }
       );
       console.log(response.data);
@@ -137,16 +138,14 @@ const AddCategory = () => {
               <input
                 type="text"
                 className="addcat form-control"
-                id="recruitername" // Ensure the id matches the 'htmlFor' attribute
+                id="recruitername"
                 placeholder="recruitername"
                 required
                 value={jobdescrecruitername}
                 onChange={(e) => setjobdescrecruitername(e.target.value)}
               />
             </div>
-           
-           
-        
+
             <div className="addcatgroup">
               <label htmlFor="recruiteremail" className="form-label">
                 <strong>Recruiter-mail:</strong>

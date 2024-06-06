@@ -31,9 +31,9 @@ router.post("/add_JobDescription", async (req, res) => {
       job_location,
       job_Id,
       description,
-      requiredSkills: requiredSkills,
-      recruiter_Name: recruiter_name,
-      recruiter_Email: recruiter_email
+      requiredSkills,
+      recruiter_name,
+      recruiter_email
     });
     
     await newJobDescription.save();
