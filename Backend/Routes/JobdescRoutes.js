@@ -23,9 +23,6 @@ router.post("/add_JobDescription", async (req, res) => {
   try {
     const { position, job_location, job_Id, description, requiredSkills, recruiter_name, recruiter_email } = req.body;
 
-
-    // const skillsArray = requiredSkills.split(",").map(skill => skill.trim());
-
     const newJobDescription = new JobDescription({
       position,
       job_location,
