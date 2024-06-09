@@ -28,6 +28,11 @@ const JobDescriptionSchema = new mongoose.Schema({
     type:String,
     required: true,
   },
+  
+  mapped: {
+    type: Boolean,
+    default: false,
+  },
 
   matchedEmployees: [{
     type: mongoose.Schema.Types.ObjectId,
