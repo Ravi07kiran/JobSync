@@ -17,7 +17,7 @@
 .details-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: justify;
   margin-bottom: 1rem;
 }
 
@@ -31,6 +31,7 @@
 
 .details-header-left p {
   margin: 0;
+  text-align: justify;
 }
 
 .details-header-right {

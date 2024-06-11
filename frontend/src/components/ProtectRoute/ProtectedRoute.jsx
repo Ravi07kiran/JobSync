@@ -210,12 +210,6 @@ const ProtectedRoute = ({ children }) => {
       onClick: () => navigate("/home/Mapper"),
     },
     {
-      title: "Users",
-      path: "/home/user",
-      icon: <FaUserPlus className="react-icon" />,
-      onClick: () => navigate("/home/user"),
-    },
-    {
       title: "Employees",
       path: "/home/employee",
       icon: <MdPeople className="react-icon" />,

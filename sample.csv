@@ -1,5 +1,4 @@
 employeeid,name,email,experience,tier,skills,location
-1,John Doe,johndoe@example.com,5,3,"[{""name"": ""JavaScript"", ""proficiency"": 4}, {""name"": ""React"", ""proficiency"": 3}]","New York"
 2,Jane Smith,janesmith@example.com,3,2,"[{""name"": ""Python"", ""proficiency"": 5}, {""name"": ""Django"", ""proficiency"": 4}]","Los Angeles"
 3,Michael Johnson,michaeljohnson@example.com,8,5,"[{""name"": ""Java"", ""proficiency"": 5}, {""name"": ""Spring"", ""proficiency"": 4}]","Chicago"
 4,Emily Brown,emilybrown@example.com,2,1,"[{""name"": ""HTML"", ""proficiency"": 3}, {""name"": ""CSS"", ""proficiency"": 4}]","San Francisco"

@@ -1,34 +1,25 @@
-import React, { useState } from "react";
-import Select from "react-select";
+router.get("/jobdescription/:jobdescriptionId/matched_employees", async (req, res) => {
+  try {
+    const jobDescription = await JobDescription.findById(req.params.jobdescriptionId);
+    if (!jobDescription) {
+      return res.status(404).json({ message: "JobDescription not found" });
+    }
 
-const options = [
-  { value: "React", label: "React" },
-  { value: "Vue", label: "Vue" },
-  { value: "Angular", label: "Angular" },
-  { value: "Java", label: "Java" }
-];
+    const employees = await employee.find({});
+    const matchedEmployees = employees.filter(emp => {
 
-function UserSkills() {
-  const [skills, setSkills] = useState([]);
+      const requiredSkills = jobDescription.requiredSkills.flat();
+      return (
+        requiredSkills.every(reqSkill =>
+          emp.skills.some(empSkill => empSkill.name === reqSkill)
+        ) &&
+        emp.location === jobDescription.job_location
+      );
+    });
 
-  const handleChange = (skills) => {
-    setSkills(skills || []);
-  };
-
-  return (
-    <>
-      <h2>Please select all your skills</h2>
-      <form>
-        <Select
-          options={options}
-          onChange={handleChange}
-          value={skills}
-          isMulti
-        />
-        <button>Next</button>
-      </form>
-    </>
-  );
-}
-
-export default UserSkills;
+    res.status(200).json({ matchedEmployees });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});

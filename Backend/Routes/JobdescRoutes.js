@@ -4,7 +4,6 @@ const JobDescription = require("../model/JobDescription");
 const userModel = require("../model/signups");
 const employee = require("../model/employee");
 
-// Get JobDescriptions
 router.get("/JobDescriptions", async (req, res) => {
   try {
     const jobDescriptions = await JobDescription.find({});
@@ -19,7 +18,6 @@ router.get("/JobDescriptions", async (req, res) => {
   }
 });
 
-// Add JobDescription
 router.post("/add_JobDescription", async (req, res) => {
   try {
     const { position, job_location, job_Id, description, requiredSkills, recruiter_name, recruiter_email } = req.body;
@@ -43,7 +41,6 @@ router.post("/add_JobDescription", async (req, res) => {
 });
 
 
-// Delete JobDescription
 router.delete("/delete_JobDescription/:jobdescriptionId", async (req, res) => {
   try {
     const deletedJobDescription = await JobDescription.findByIdAndDelete(
@@ -70,7 +67,7 @@ router.put('/update_JobDescription/:jobdescriptionId', async (req, res) => {
   const updateData = req.body;
 
   try {
-    // Ensure requiredSkills is an array of strings
+    
     if (updateData.requiredSkills) {
       updateData.requiredSkills = updateData.requiredSkills.map(skill => skill.value || skill);
     }
@@ -93,7 +90,6 @@ router.put('/update_JobDescription/:jobdescriptionId', async (req, res) => {
 });
 
 
-// Get mapped employees for a JobDescription
 router.get("/jobdescription/:id/mapped_employees", async (req, res) => {
   try {
     const jobDescription = await JobDescription.findById(req.params.id).populate('matchedEmployees');
