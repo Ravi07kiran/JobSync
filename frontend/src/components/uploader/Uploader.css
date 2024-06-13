@@ -3,6 +3,8 @@
   justify-content: center;
   align-items: center;
   padding: 0 10px;
+  min-height: 100vh; /* Ensure the container takes full height of the viewport */
+  background-color: #f9f9f9; /* Optional: Adds a subtle background color */
 }
 
 .uploadCard {
@@ -12,6 +14,7 @@
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 32px;
+  box-sizing: border-box;
 }
 
 .uploadTitle {
@@ -40,7 +43,7 @@
   color: #666666;
 }
 
-.uploadFileInput button {
+.uploadButton {
   background-color: #2196f3;
   color: #ffffff;
   border: none;
@@ -52,8 +55,13 @@
   transition: background-color 0.3s;
 }
 
-.uploadFileInput button:hover {
+.uploadButton:hover {
   background-color: #1976d2;
+}
+
+.uploadButton:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
 }
 
 .uploadMessage {
@@ -83,7 +91,7 @@
     margin-bottom: 12px;
   }
 
-  .uploadFileInput button {
+  .uploadButton {
     width: 100%;
   }
 }
@@ -102,7 +110,7 @@
   }
 
   .uploadFileInput input[type="file"],
-  .uploadFileInput button {
+  .uploadButton {
     font-size: 14px;
   }
 

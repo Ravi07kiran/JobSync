@@ -227,31 +227,49 @@ const DetailsCard = ({ jobdescription, onClose }) => {
         <div className="details-header-left">
           <h2>{jobdescription.position}</h2>
           <p>Location: {jobdescription.job_location}</p>
-          <p>Skills:</p>
-          <ul>
-            {jobdescription.requiredSkills.map((skill, index) => (
+          <p>Skills: {jobdescription.requiredSkills.length > 0 && (
+    
+    jobdescription.requiredSkills.join(', ')
+  )}</p>
+          {/* <ul> */}
+            {/* {jobdescription.requiredSkills.map((skill, index) => (
               <li key={index}>{skill}</li>
-            ))}
-          </ul>
+              
+            ))} */}
+            
+          {/* </ul> */}
         </div>
         <div className="details-header-right">
           <p>{jobdescription.description}</p>
         </div>
       </div>
       <div className="top-profiles">
-        <h3>Top Matching Profiles</h3>
-        <div className="top-profiles-row">
-          {matchingProfiles.length > 0 ? (
-            matchingProfiles.map((employee, index) => (
-              <div className="profile-card" key={index}>
-                <p><strong>Name:</strong> {employee.name}</p>
-                <p><strong>EMPID:</strong>{employee.employeeid}</p>
-              </div>
-            ))
-          ) : (
-            <p>No matching profiles found</p>
-          )}
-        </div>
+        <h3>Top Matching</h3>
+        <div className="emptable-container">
+  <table className="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {matchingProfiles.length > 0 ? (
+        matchingProfiles.map((employee, index) => (
+          <tr key={index}>
+            <td>{employee.name}</td>
+            <td>{employee.employeeid}</td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan="2">No matching profiles found</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
       </div>
       <button className="close-button" onClick={onClose}>Close</button>
     </div>
