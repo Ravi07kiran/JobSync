@@ -100,7 +100,7 @@ const SideNavbar = () => {
               <hr />
               <div className="flex-row">
                 <h5>Total:</h5>
-                <h5>{employeeTotal}</h5>
+                <h5>{}</h5>
               </div>
             </div>
 
@@ -111,7 +111,7 @@ const SideNavbar = () => {
               <hr />
               <div className="flex-row">
                 <h5>Total:</h5>
-                <h5>{employeeTotal}</h5>
+                <h5>{}</h5>
               </div>
             </div>
           </div>

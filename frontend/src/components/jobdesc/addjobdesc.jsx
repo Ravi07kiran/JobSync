@@ -10,7 +10,8 @@ const options = [
   { value: "React", label: "React" },
   { value: "Vue", label: "Vue" },
   { value: "Angular", label: "Angular" },
-  { value: "Java", label: "Java" }
+  { value: "Java", label: "Java" },
+  { value: "Dotnet", label: "Dotnet" }
 ];
 
 const AddCategory = () => {

@@ -38,6 +38,11 @@ const JobDescriptionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "employee",
   }],
+
+  mapped: {
+    type: Boolean,
+    default: false,
+  },
   
   user: {
     type: mongoose.Schema.Types.ObjectId,

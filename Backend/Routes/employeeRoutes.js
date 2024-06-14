@@ -3,7 +3,7 @@ const router = express.Router();
 const employee = require("../model/employee");
 const userModel = require("../model/signups");
 
-// Get employees
+
 router.get("/employees", async (req, res) => {
   try {
     const employees = await employee.find({});
@@ -18,7 +18,6 @@ router.get("/employees", async (req, res) => {
   }
 });
 
-// Get a single employee by user ID and employee ID
 router.get("/employee_s/:employeeId", async (req, res) => {
   try {
     const employeeId = req.params.employeeId;
@@ -40,12 +39,10 @@ router.get("/employee_s/:employeeId", async (req, res) => {
   }
 });
 
-// Add employee
 router.post("/add_employee", async (req, res) => {
   try {
     const { employeeid, name, email, experience, tier, skills, location } = req.body;
 
-    // Validate required fields
     if (!employeeid || !name || !email || !experience || !tier  || !skills || !location) {
       return res.status(400).json({ error: "All fields are required" });
     }
@@ -60,7 +57,7 @@ router.post("/add_employee", async (req, res) => {
   }
 });
 
-// Delete employee
+
 router.delete("/delete_employee/:id", async (req, res) => {
   try {
     const employeeId = req.params.id;
@@ -81,7 +78,6 @@ router.delete("/delete_employee/:id", async (req, res) => {
   }
 });
 
-// Employee count
 router.get("/employee_count", async (req, res) => {
   try {
     const employeeCount = await employee.countDocuments({});
@@ -92,7 +88,7 @@ router.get("/employee_count", async (req, res) => {
   }
 });
 
-// Update employee
+
 router.put("/update_employee/:id", async (req, res) => {
   const { id } = req.params;
   const { employeeid, name, email, tier, experience, skills, location } = req.body;

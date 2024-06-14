@@ -196,10 +196,9 @@ const JobDescriptionItem = ({ jobdescription, onDelete, onUpdate }) => {
     </div>
   );
 };
-
 const DetailsCard = ({ jobdescription, onClose }) => {
   const [matchingProfiles, setMatchingProfiles] = useState([]);
-  const [mapped, setMapped] = useState(false);
+  const [mappedEmployees, setMappedEmployees] = useState(new Set()); // Use Set to keep track of mapped employees
 
   useEffect(() => {
     const fetchMatchedEmployees = async () => {
@@ -220,62 +219,79 @@ const DetailsCard = ({ jobdescription, onClose }) => {
     fetchMatchedEmployees();
   }, [jobdescription]);
 
+  const handleMapToJob = async (employeeId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/Jobdescription/Jobdescription/map_employee_to_job`,
+        {
+          jobId: jobdescription._id,
+          employeeId: employeeId,
+        }
+      );
+      if (response.data.success) {
+        // Update mappedEmployees set to include the newly mapped employee
+        setMappedEmployees(new Set(mappedEmployees).add(employeeId));
+
+        toast.success(`Successfully mapped employee to job: ${response.data.mappingDetails}`);
+        // You can update UI or perform additional actions after successful mapping
+      } else {
+        toast.error('Failed to map employee to job. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error mapping employee to job:', error);
+      toast.error('Failed to map employee to job. Please try again.');
+    }
+  };
+
+  const isMapped = (employeeId) => {
+    return mappedEmployees.has(employeeId);
+  };
+
   return (
     <div className="details-card">
       <ToastContainer />
       <div className="details-header">
-        <div className="details-header-left">
-          <h2>{jobdescription.position}</h2>
-          <p>Location: {jobdescription.job_location}</p>
-          <p>Skills: {jobdescription.requiredSkills.length > 0 && (
-    
-    jobdescription.requiredSkills.join(', ')
-  )}</p>
-          {/* <ul> */}
-            {/* {jobdescription.requiredSkills.map((skill, index) => (
-              <li key={index}>{skill}</li>
-              
-            ))} */}
-            
-          {/* </ul> */}
-        </div>
-        <div className="details-header-right">
-          <p>{jobdescription.description}</p>
-        </div>
+        <h2>{jobdescription.position}</h2>
+        <p>Location: {jobdescription.job_location}</p>
+        <p>Skills: {jobdescription.requiredSkills.join(', ')}</p>
       </div>
       <div className="top-profiles">
-        <h3>Top Matching</h3>
-        <div className="emptable-container">
-  <table className="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>ID</th>
-      </tr>
-    </thead>
-    <tbody>
-      {matchingProfiles.length > 0 ? (
-        matchingProfiles.map((employee, index) => (
-          <tr key={index}>
-            <td>{employee.name}</td>
-            <td>{employee.employeeid}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="2">No matching profiles found</td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
-
+        <h3>Top Matching Profiles</h3>
+        <div className="employee-table">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matchingProfiles.length > 0 ? (
+                matchingProfiles.map((employee, index) => (
+                  <tr key={index}>
+                    <td>{employee.name}</td>
+                    <td>{employee.employeeid}</td>
+                    <td>
+                      {isMapped(employee._id) ? (
+                        <span>Mapped</span>
+                      ) : (
+                        <button onClick={() => handleMapToJob(employee._id)}>Map</button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3">No matching profiles found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <button className="close-button" onClick={onClose}>Close</button>
     </div>
   );
 };
-
-
-
 export default Mapper;

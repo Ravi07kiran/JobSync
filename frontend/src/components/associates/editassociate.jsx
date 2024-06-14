@@ -177,6 +177,7 @@ const EditEmployee = () => {
                     name="name"
                     value={skill.name}
                     onChange={(e) => handleSkillChange(index, e)}
+                    
                   />
                   <input
                     type="number"
@@ -187,7 +188,9 @@ const EditEmployee = () => {
                     min="1"
                     max="5"
                     onChange={(e) => handleSkillChange(index, e)}
+                    
                   />
+                 
                 </div>
               ))}
               

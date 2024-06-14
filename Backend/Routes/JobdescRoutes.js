@@ -90,32 +90,6 @@ router.put('/update_JobDescription/:jobdescriptionId', async (req, res) => {
 });
 
 
-
-// router.get("/jobdescription/:jobdescriptionId/matched_employees", async (req, res) => {
-//   try {
-//     const jobDescription = await JobDescription.findById(req.params.jobdescriptionId);
-//     if (!jobDescription) {
-//       return res.status(404).json({ message: "JobDescription not found" });
-//     }
-
-//     const employees = await employee.find({});
-//     const matchedEmployees = employees.filter(emp => {
-
-//       const requiredSkills = jobDescription.requiredSkills.flat();
-//       return (
-//         requiredSkills.every(reqSkill =>
-//           emp.skills.some(empSkill => empSkill.name === reqSkill)
-//         ) &&
-//         emp.location === jobDescription.job_location
-//       );
-//     });
-
-//     res.status(200).json({ matchedEmployees });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 router.get("/jobdescription/:jobdescriptionId/matched_employees", async (req, res) => {
   try {
     const jobDescription = await JobDescription.findById(req.params.jobdescriptionId);
@@ -125,18 +99,47 @@ router.get("/jobdescription/:jobdescriptionId/matched_employees", async (req, re
 
     const employees = await employee.find({});
     const matchedEmployees = employees.filter((emp) => {
-      // Check if any of the employee's skills match any of the required skills
+
       const hasMatchingSkill = emp.skills.some((empSkill) =>
         jobDescription.requiredSkills.includes(empSkill.name)
       );
 
-      // Also ensure the employee's location matches the job description
       return hasMatchingSkill && emp.location === jobDescription.job_location;
     });
 
     res.status(200).json({ matchedEmployees });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+router.post("/jobdescription/map_employee_to_job", async (req, res) => {
+  const { jobId, employeeId } = req.body;
+
+  try {
+    const jobDescription = await JobDescription.findById(jobId);
+    const emp = await employee.findById(employeeId);
+
+    if (!jobDescription || !emp) {
+      return res.status(404).json({ message: "JobDescription or employee not found" });
+    }
+
+    if (jobDescription.matchedEmployees.includes(employeeId)) {
+      return res.status(400).json({ message: "Employee is already mapped to this job description" });
+    }
+
+    jobDescription.matchedEmployees.push(employeeId);
+    await jobDescription.save();
+
+    jobDescription.mapped = true;
+    await jobDescription.save();
+
+    res.status(200).json({ success: true, mappingDetails: `Employee ${emp.name} mapped to Job: ${jobDescription.position}` });
+  } catch (error) {
+    console.error("Error mapping employee to job:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

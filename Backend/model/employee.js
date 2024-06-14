@@ -39,6 +39,11 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  mappedJobDescription: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "JobDescription", 
+    default: null, 
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "signups",

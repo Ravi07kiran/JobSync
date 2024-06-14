@@ -27,7 +27,6 @@ const signupSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
 });
 
-// Middleware to automatically set the status when the role changes
 signupSchema.pre("save", function (next) {
   if (this.isModified("role")) {
     this.status = this.role === "admin" ? 1 : 0;
