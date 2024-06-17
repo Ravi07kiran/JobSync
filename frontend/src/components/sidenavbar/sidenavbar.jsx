@@ -84,7 +84,7 @@ const SideNavbar = () => {
             <div className="custom-box">
               <div className="custom-headings">
                 
-                <h4>Total Employee</h4>
+                <h4>Employee</h4>
               </div>
               <hr />
               <div className="flex-row">
