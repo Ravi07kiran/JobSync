@@ -1,556 +1,191 @@
-Position
+const express = require("express");
+const router = express.Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const userModel = require("../model/signups");
+const Activity = require("../model/activity");
 
-job_location
+router.use(express.json());
 
-Job_Id
-
-decription
-
-requiredSkills
-
-recruiter_name
-
-recruiter_email
-
-
-
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { FaRegEdit } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
-import { Link } from "react-router-dom";
-// import noData from "../img/nodata.png";
-import "../sidenavbar/sidenavbar.css";
-import "./jobdesc.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Update from "./update.jsx";
-
-const Category = () => {
-
-  const [jobdescriptions, setjobdescriptions] = useState([]);
-  const [alljobdescriptions, setalljobdescriptions] = useState(null);
-  // Add editingIndex state
-  const [jobdescposition,setjobdescposition]=useState("");
-  const [jobdesclocation,setjobdesclocation]=useState("");
-  const [jobdescId, setjobdescId] = useState("");
-  const [jobdescdescription, setjobdescdescription] = useState("");
-  const [jobdescrequiredSkills, setjobdescrequiredSkills] = useState([]);
-  const [jobdescrecruitername, setjobdescrecruitername]=useState("");
-  const [jobdescrecruitermail, setjobdescrecruitermail]=useState("");
-
-  const [jobdescriptionId, setSelectedId] = useState(null);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-
-  //get categories
-  const fetchjobdecs = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4000/Jobdescription/JobDescriptions`
-      );
-      if (response.data.JobDescriptions && response.data.JobDescriptions.length > 0) {
-        setalljobdescriptions(response.data.JobDescriptions);
-        setjobdescriptions(response.data.JobDescriptions);
-      } else {
-        console.log("No categories found or empty response.");
-      }
-    } catch (error) {
-      console.error("Error");
-    }
-  };
-
-  useEffect(() => {
-    fetchjobdecs();
-  }, [alljobdescriptions]);
-  // Check if categories is defined before mapping
-  const jobdescriptionsList = jobdescriptions || [];
-
-  const handleDelete = async (jobdescriptionId) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:4000/Jobdescription/delete_JobDescription/${jobdescriptionId}`
-      );
-
-      if (response.data.Status) {
-        const updatedjobdescriptions = jobdescriptions.filter(
-          (jobdescription) => jobdescription._id !== jobdescriptionId
-        );
-        setjobdescriptions(updatedjobdescriptions);
-        toast.success("Deleted successfully!");
-      } else {
-        console.error("Failed to delete category");
-        toast.error("Error in deleting. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error in deleting. Please try again.");
-    }
-  };
-
-  //for update
-  const handleOpenUpdateModal = (jobdescription = {}) => {
-    const {
-      _id = '',
-      position = '',
-      job_location = '',
-      job_Id = '',
-      description = '',
-      requiredSkills = [],
-      recruiter_name = '',
-      recruiter_email = '',
-    } = jobdescription;
-  
-    setSelectedId(_id);
-    setjobdescposition(position);
-    setjobdesclocation(job_location);
-    setjobdescId(job_Id);
-    setjobdescdescription(description);
-    setjobdescrequiredSkills(requiredSkills.map((skill) => ({ value: skill, label: skill })));
-    setjobdescrecruitername(recruiter_name);
-    setjobdescrecruitermail(recruiter_email);
-    setIsUpdateModalOpen(true);
-  };
-
-
-  const handleCloseUpdateModal = () => {
-    setSelectedId(null);
-    setjobdescposition('');
-    setjobdesclocation('');
-    setjobdescId('');
-    setjobdescdescription('');
-    setjobdescrequiredSkills([]);
-    setjobdescrecruitername('');
-    setjobdescrecruitermail('');
-    setIsUpdateModalOpen(false);
-  };
-
-
-  //update
-  const handleUpdate = async (
-    jobdescriptionId,
-    updatedposition,
-    updatedjob_location,
-    updatedjob_Id,
-    updateddescription,
-    updatedskills,
-    updatedrecruiter_name,
-    updatedrecruiter_email
-  ) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:4000/Jobdescription/update_JobDescription/${jobdescriptionId}`,
-        {
-          position: updatedposition,
-          job_location: updatedjob_location,
-          job_Id: updatedjob_Id,
-          description: updateddescription,
-          requiredSkills: updatedskills.map(skill => skill.value), // Map to get the values of the skills
-          recruiter_name: updatedrecruiter_name,
-          recruiter_email: updatedrecruiter_email
-        }
-      );
-      console.log('Server response:', response.data);
-  
-      if (response.data.updatedJobDescription) {
-        const updatedJobDescriptions = jobdescriptions.map(jobdescription =>
-          jobdescription._id === jobdescriptionId
-            ? response.data.updatedJobDescription
-            : jobdescription
-        );
-        setjobdescriptions(updatedJobDescriptions);
-        toast.success("Updated successfully!");
-        handleCloseUpdateModal(); // Close the update modal
-      } else {
-        toast.error("Error in updating. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Error in updating. Please try again.");
-    }
-  };
-
-  return (
-    <div>
-      <div>
-        <div class="custom-container">
-          <ToastContainer />
-          <div className="catheader">
-            <h3> Jobdescription List</h3>
-          </div>
-          <div className="catcenter">
-            <div class="custom-content">
-              <div className="categorytask">
-                <Link to="/home/Jobdescription/add" className="custom-btn btn-9">
-                  Add Jobdescription
-                </Link>
-              </div>
-            </div>
-          </div>
-          {jobdescriptionsList.length > 0 ? (
-            <div className="task-cards-container">
-              <div className="task-cards">
-              {jobdescriptionsList.map((jobdescription) => (
-              <div className="task-card" key={jobdescription._id}>
-                <h3>{jobdescription.position}</h3>
-                <p>{jobdescription.job_location}</p>
-                <p>{jobdescription.job_Id}</p>
-                <p>{jobdescription.description}</p>
-                <h3>{jobdescription.skills}</h3>
-                <p>{jobdescription.recruiter_name}</p>
-                <p>{jobdescription.recruiter_email}</p>
-                <div className="button-container">
-                  <button
-                    title="Update"
-                    onClick={() =>
-                      handleOpenUpdateModal(
-                        jobdescription._id,
-                        jobdescription.position,
-                        jobdescription.job_location,
-                        jobdescription.job_Id,
-                        jobdescription.description,
-                        jobdescription.skills,
-                        jobdescription.recruiter_name,
-                        jobdescription.recruiter_email            
-                      )
-                    }
-                      >
-                        <FaRegEdit />
-                      </button>
-                      <button
-                        title="Delete"
-                        onClick={() => handleDelete(jobdescription._id)}
-                      >
-                        <MdDeleteForever />
-                      </button>
-                    </div>
-                  </div>
-                  ))}
-
-                {isUpdateModalOpen && (
-                  <Update
-                  jobdescriptionId={jobdescriptionId}
-                  onClose={handleOpenUpdateModal}
-                  onUpdate={handleUpdate}
-                  position={jobdescposition} 
-                  description={jobdescdescription}
-                  skills={jobdescrequiredSkills}
-                  recruiter_name={jobdescrecruitername}
-                  recruiter_email={jobdescrecruitermail}
-                />
-               
-                )}
-              </div>
-            </div>
-          ) : (
-            <div className="no-data-message">
-              {/* <img src={noData} alt="" className="nodata" /> */}
-              <p className="no-data-text">
-                No jobdescDescription found. Add new categories to display in the list.
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+const logActivity = async (userId,username, action, details) => {
+  try {
+    const activity = new Activity({
+      user: userId,
+      name : username,
+      action: action,
+      details: details,
+      timestamp: new Date(),
+     
+    });
+    await activity.save();
+  } catch (error) {
+    console.error('Error logging activity:', error);
+  }
 };
 
-export default Category;
-
-
-
-
-
-import React, { useState } from "react";
-import "./update.css";
-import Select from "react-select";
-
-
-const options = [
-  { value: "React", label: "React" },
-  { value: "Vue", label: "Vue" },
-  { value: "Angular", label: "Angular" },
-  { value: "Java", label: "Java" }
-];
-
-const Update = ({ onClose, onUpdate, jobdescriptionId, position, job_location, job_Id, description, skills, recruiter_name, recruiter_email}) => {
-  const [updatedposition, setupdatedposition] = useState(position);
-  const [updatedjob_location,setupdatedjob_location] = useState(job_location);
-  const [updatedjob_Id, setupdatedjob_Id] = useState(job_Id)
-  const [updateddescription, setUpdateddescription] = useState(description);
-  const [updatedskills, setupdatedskills] = useState(skills || []);
-  const [updatedrecruiter_name, setupdatedrecruiter_name] = useState(recruiter_name);
-  const [updatedrecruiter_email, setupdatedrecruiter_email] = useState(recruiter_email);
-  const handleUpdate = () => {
-    onUpdate(jobdescriptionId, updatedposition, updatedjob_location, updatedjob_Id, updateddescription, updatedskills, updatedrecruiter_name, updatedrecruiter_email);
-    // Close the modal
-    onClose();
-  };
-
-  const handleClose = () => {
-    onClose();
-  };
-
-  const handleChange = (skills) => {
-    setupdatedskills(skills || []);
-  };
-
-  return (
-    <div className="update-overlay">
-      <div className="update-content">
-        <h3 className="updatetext">Update Jobdescription</h3>
-        <input
-          type="text"
-          className="todo-input"
-          placeholder="position"
-          value={updatedposition}
-          onChange={(e) => setupdatedposition(e.target.value)}
-        />
-        <input
-          type="text"
-          className="todo-input"
-          placeholder="Loaction"
-          value={updatedjob_location}
-          onChange={(e) => setupdatedjob_location(e.target.value)}
-        />
-
-        <input
-          type="text"
-          className="todo-input"
-          placeholder="JOB ID"
-          value={updatedjob_Id}
-          onChange={(e) => setupdatedjob_Id(e.target.value)}
-        />
-        
-        <textarea
-          className="todo custom-scrollbar"
-          placeholder="Description"
-          value={updateddescription}
-          onChange={(e) => setUpdateddescription(e.target.value)}
-        />
-
-            <Select
-              id="skills"
-              name="skills"
-              options={options}
-              onChange={handleChange}
-             value={updatedskills}
-             isMulti
-            />
-
-        <input
-          type="text"
-          className="todo-input"
-          placeholder="Recruiter Name"
-          value={updatedrecruiter_name}
-          onChange={(e) => setupdatedrecruiter_name(e.target.value)}
-        />
-        <input
-          type="text"
-          className="todo-input"
-          placeholder="Recruiter Email"
-          value={updatedrecruiter_email}
-          onChange={(e) => setupdatedrecruiter_email(e.target.value)}
-        />
-        <div className="btns2">
-          <button className="btnup " onClick={handleUpdate}>
-            Update
-          </button>
-          <button className="btns " onClick={handleClose}>
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Update;
-
-
-
-
-
-import React, { useState } from "react";
-import Select from "react-select";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "../sidenavbar/sidenavbar.css";
-import "./jobdesc.css";
-import "./addjobdesc.css";
-
-const options = [
-  { value: "React", label: "React" },
-  { value: "Vue", label: "Vue" },
-  { value: "Angular", label: "Angular" },
-  { value: "Java", label: "Java" }
-];
-
-const AddCategory = () => {
-  const navigate = useNavigate();
-  const [jobdescposition,setjobdescposition]=useState("");
-  const [jobdesclocation,setjobdesclocation]=useState("");
-  const [jobdescId, setjobdescId] = useState("");
-  const [jobdescdescription, setjobdescdescription] = useState("");
-  const [jobdescrequiredSkills, setjobdescrequiredSkills] = useState([]);
-  const [jobdescrecruitername, setjobdescrecruitername]=useState("");
-  const [jobdescrecruitermail, setjobdescrecruitermail]=useState("");
-
-  const handleChange = (jobdescrequiredSkills) => {
-    setjobdescrequiredSkills(jobdescrequiredSkills || []);
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/JobDescription/add_JobDescription",
-        {
-          position: jobdescposition, 
-          job_location:jobdesclocation,
-          job_Id: jobdescId,
-          description: jobdescdescription,
-          requiredSkills: jobdescrequiredSkills,
-          recruiter_name:jobdescrecruitername,
-          recruiter_email:jobdescrecruitermail
-        }
-      );
-      console.log(response.data);
-      navigate("/home/Jobdescription");
-    } catch (error) {
-      console.error(error);
-      navigate("/home/Jobdescription");
+const verifyUser = (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res
+        .status(401)
+        .json({ error: "Authorization token not provided" });
     }
-  };
-
-  return (
-    <div>
-      <div className="addcatcontainer">
-        <div className="addcatcontent rounded border">
-          <h3 className="text-center">Add Job Description</h3>
-          <form className="addcatform" onSubmit={handleSubmit}>
-            
-          <div className="addcatgroup">
-              <label htmlFor="Id" className="form-label">
-                <strong>Job ID:</strong>
-              </label>
-              <input
-                type="text"
-                className="addcat form-control"
-                id="Id" // Ensure the id matches the 'htmlFor' attribute
-                placeholder="Id"
-                required
-                value={jobdescId}
-                onChange={(e) => setjobdescId(e.target.value)}
-              />
-            </div>
-             <div className="addcatgroup">
-              <label htmlFor="position" className="form-label">
-                <strong>Position:</strong>
-              </label>
-              <input
-                type="text"
-                className="addcat form-control"
-                id="position" // Ensure the id matches the 'htmlFor' attribute
-                placeholder="position"
-                required
-                value={jobdescposition}
-                onChange={(e) => setjobdescposition(e.target.value)}
-              />
-            </div>
-            <div className="addcatgroup">
-              <label htmlFor="location" className="form-label">
-                <strong>Location:</strong>
-              </label>
-              <input
-                type="text"
-                className="addcat form-control"
-                id="location" // Ensure the id matches the 'htmlFor' attribute
-                placeholder="location"
-                required
-                value={jobdesclocation}
-                onChange={(e) => setjobdesclocation(e.target.value)}
-              />
-            </div>
-            
-            <div className="addcatgroup">
-              <label htmlFor="description" className="form-label">
-                <strong>Description:</strong>
-              </label>
-              <textarea
-                id="description"
-                className="addcat form-control custom-scrollbar"
-                placeholder="Description"
-                required
-                value={jobdescdescription}
-                onChange={(e) => setjobdescdescription(e.target.value)}
-                style={{ resize: "none" }}
-              />
-            </div>
-           
-            <div className="addcatgroup">
-              <label htmlFor="skills" className="form-label">
-                <strong>Requiredskills:</strong>
-              </label>
-              <Select
-              id="skills"
-              name="skills"
-              options={options}
-              onChange={handleChange}
-             value={jobdescrequiredSkills}
-             isMulti
-            />
-            </div>
-            
-            <div className="addcatgroup">
-              <label htmlFor="recruitername" className="form-label">
-                <strong>Recruitername:</strong>
-              </label>
-              <input
-                type="text"
-                className="addcat form-control"
-                id="recruitername" // Ensure the id matches the 'htmlFor' attribute
-                placeholder="recruitername"
-                required
-                value={jobdescrecruitername}
-                onChange={(e) => setjobdescrecruitername(e.target.value)}
-              />
-            </div>
-           
-           
-        
-            <div className="addcatgroup">
-              <label htmlFor="recruiteremail" className="form-label">
-                <strong>Recruiter-mail:</strong>
-              </label>
-              <input
-                type="email"
-                className="addcat form-control"
-                id="recruiteremail" // Ensure the id matches the 'htmlFor' attribute
-                placeholder="recruiteremail"
-                required
-                value={jobdescrecruitermail}
-                onChange={(e) =>setjobdescrecruitermail(e.target.value)}
-              />
-            </div>
-            <div className="addcatbtngroup">
-              <button type="submit" className="cat-save">
-                Add
-              </button>
-              <button
-                type="button" // Changed type to "button" to prevent form submission on close
-                className="cat-close"
-                onClick={() => navigate("/home/Jobdescription")}
-              >
-                Close
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+      if (err) {
+        throw err;
+      }
+      req.user = decoded;
+      next();
+    });
+  } catch (error) {
+    return res
+      .status(401)
+      .json({ success: false, error: "Token is invalid or expired" });
+  }
 };
 
-export default AddCategory;
+router.get("/home", verifyUser, (req, res) => {
+  return res.status(200).json({ success: true, user: req.user });
+});
+
+
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: "User Does Not Exist" });
+    }
+    const passwordMatch = bcrypt.compare(password, user.password);
+    if (passwordMatch) {
+      const { password, ...others } = user._doc;
+      const token = jwt.sign({ userId: user._id }, "jwt-secret-key", {
+        expiresIn: "5m",
+      });
+      await logActivity(user._id, user.name ,"Login", "User logged in.");
+      return res.status(200).json({ others, token });
+    } else {
+      return res
+        .status(401)
+        .json({ error: "The password is incorrect. Try Again!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+router.post("/register", async (req, res) => {
+  try {
+
+    const existingUser = await userModel.findOne({ email: req.body.email });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ error: "Email is already registered. Please Login" });
+    } else {
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      
+      const newUser = {
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
+        role: req.body.role,
+      };
+     
+      const createdUser = await userModel.create(newUser);
+      
+      res.json(createdUser);
+      await logActivity(createdUser._id,  createdUser.name, "Register", "User registered.");
+    }
+  } catch (error) {
+
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/users", async (req, res) => {
+  try {
+    const users = await userModel.find({ role: ["LC","RM","HR"] }, "_id name role email");
+    
+    res.json(users);
+    //await logActivity(req.users._id, users.name, "View Users", "User viewed user list.");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    
+    await userModel.findByIdAndDelete(userId);
+    
+    res.status(200).json({ message: "User deleted successfully" });
+    await logActivity(userId, user.name, "Delete User", `Deleted user ${userId}.`);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// router.put("/update_user/:id", verifyUser, async (req, res) => {
+//   const { id } = req.params;
+//   const { name, email, role } = req.body;
+
+//   try {
+//     const updatedUser = await userModel.findByIdAndUpdate(
+//       id,
+//       { name, email, role },
+//       { new: true }
+//     );
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+   
+//     res.json({ updatedUser });
+
+//     await logActivity(req.user.userId, req.user.name, "Update User", `Updated user ${id}.`);
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error in updating. Please try again." });
+//   }
+// });
+
+router.put("/update_user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, email, role } = req.body;
+
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      { name, email, role },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ updatedUser });
+    
+     await logActivity(req.user.userId, req.user.name, "Update User", `Updated user ${id}.`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error in updating. Please try again." });
+  }
+});
+
+
+module.exports = router;

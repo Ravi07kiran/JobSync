@@ -186,7 +186,7 @@ const EditEmployee = () => {
                     name="proficiency"
                     value={skill.proficiency}
                     min="1"
-                    max="5"
+                    max="3"
                     onChange={(e) => handleSkillChange(index, e)}
                     
                   />

@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import imageArt from "../img/back1.png";
-// import Logo from "../img/Logo.png";
 import "./signup.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -88,13 +86,7 @@ function Signup() {
     <div className="cardStyle">
       <nav className="navbar navbar-expand-lg navbar-light" style={{ top: 0 }}>
         <div className="BAR">
-          {/* <Link to="/" className="navbar-brand">
-            <img
-              src={Logo}
-              style={{ height: "150%", marginLeft: "15%" }}
-              alt="Logo"
-            />
-          </Link> */}
+
           <div className="d-flex">
             <ul
               className="navbar-nav"
@@ -133,9 +125,6 @@ function Signup() {
         </div>
       </nav>
       <div className="blurredCardStyle mx-auto p-2 rounded-4 px-4">
-        {/* <div className="signimg">
-          <img src={imageArt} alt="" className="art" />
-        </div> */}
         <div style={cardNew}>
           <h2
             className="d-flex justify-content-center align-items-center"
@@ -155,7 +144,7 @@ function Signup() {
               </div>
               <input
                 type="text"
-                //placeholder="Enter Name"
+                
                 autoComplete="off"
                 name="name"
                 className="inputStyle form-control rounded-3"

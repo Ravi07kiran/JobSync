@@ -7,7 +7,8 @@ const options = [
   { value: 'Vue', label: 'Vue' },
   { value: 'Angular', label: 'Angular' },
   { value: 'Java', label: 'Java' },
-  { value: "Dotnet", label: "Dotnet" }
+  { value: "Dotnet", label: "Dotnet" },
+  { value: "Python", label: "Python" }
 ];
 
 const Update = ({

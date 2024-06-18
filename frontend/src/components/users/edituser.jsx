@@ -5,9 +5,9 @@ const EditUser = ({ onClose, onUpdate, userId, uname, uemail, urole }) => {
   const [updatedName, setUpdatedName] = useState(uname);
   const [updatedEmail, setUpdatedEmail] = useState(uemail);
   const [updatedRole, setUpdatedRole] = useState(urole);
+
   const handleUpdate = () => {
     onUpdate(userId, updatedName, updatedEmail, updatedRole);
-    // Close the modal
     onClose();
   };
 
@@ -49,26 +49,27 @@ const EditUser = ({ onClose, onUpdate, userId, uname, uemail, urole }) => {
           />
         </div>
         <div className="usergroup">
-          <label
-            htmlFor="category"
-            className="form-label"
+          <label htmlFor="category" className="form-label">
+            Role
+          </label>
+          <select
+            name="category"
+            id="category"
+            className="form-select"
             value={updatedRole}
             onChange={(e) => setUpdatedRole(e.target.value)}
           >
-            Role
-          </label>
-          <select name="category" id="category" className="form-select">
-          <option value="admin">Admin</option>
-                <option value="LC">L&C</option>
-                <option value="RM">RM</option>
-                <option value="HR">HR</option>
+            <option value="admin">Admin</option>
+            <option value="LC">L&C</option>
+            <option value="RM">RM</option>
+            <option value="HR">HR</option>
           </select>
         </div>
         <div className="btns2grp">
-          <button className="btnup " onClick={handleUpdate}>
+          <button className="btnup" onClick={handleUpdate}>
             Update
           </button>
-          <button className="btns " onClick={handleClose}>
+          <button className="btns" onClick={handleClose}>
             Close
           </button>
         </div>

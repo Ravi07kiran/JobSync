@@ -75,7 +75,7 @@ const Users = () => {
     userId,
     updatedUserName,
     updatedUserEmail,
-    updatedUserRole
+    updatedUserRole,
   ) => {
     try {
       const response = await axios.put(
