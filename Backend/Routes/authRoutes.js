@@ -3,8 +3,27 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userModel = require("../model/signups");
+const Activity = require("../model/activity");
 
 router.use(express.json());
+
+
+const logActivity = async (userId, username, action, details) => {
+  try {
+    const activity = new Activity({
+      user: userId,
+      name : username,
+      action: action,
+      details: details,
+      timestamp: new Date(),
+     
+    });
+    await activity.save();
+  } catch (error) {
+    console.error('Error logging activity:', error);
+  }
+};
+
 
 const verifyUser = (req, res, next) => {
   try {
@@ -44,8 +63,9 @@ router.post("/login", async (req, res) => {
     if (passwordMatch) {
       const { password, ...others } = user._doc;
       const token = jwt.sign({ userId: user._id }, "jwt-secret-key", {
-        expiresIn: "1h",
+        expiresIn: "5m",
       });
+      await logActivity(user._id, user.name ,"Login", "User logged in.");
       return res.status(200).json({ others, token });
     } else {
       return res
@@ -80,6 +100,7 @@ router.post("/register", async (req, res) => {
       const createdUser = await userModel.create(newUser);
       // Respond with the created user
       res.json(createdUser);
+      await logActivity(createdUser._id,  createdUser.name, "Register", "User registered.");
     }
   } catch (error) {
     // Handle errors
@@ -108,7 +129,10 @@ router.delete("/users/:id", async (req, res) => {
     }
     // Remove the user
     await userModel.findByIdAndDelete(userId);
-    return res.status(200).json({ message: "User deleted successfully" });
+    
+    res.status(200).json({ message: "User deleted successfully" });
+    
+    await logActivity(userId, user.name, "Delete User", `Deleted user ${userId}.`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -129,6 +153,7 @@ router.put("/update_user/:id", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     res.json({ updatedUser });
+    await logActivity(updatedUser._id, updatedUser.name, "Update User", `Updated user ${id}.`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error in updating. Please try again." });
