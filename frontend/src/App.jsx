@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import FirstPage from "./components/firstpage/firstpage";
 import Signup from "./components/signup/signup";
 import Login from "./components/login/login";
@@ -14,32 +14,55 @@ import EditEmployee from "./components/associates/editassociate";
 import Category from "./components/jobdesc/jobdesc";
 import AddCategory from "./components/jobdesc/addjobdesc";
 import Profile from "./components/profile/profile";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux/es/exports";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { authActions } from "./store";
 import ProtectedRoute from "./components/ProtectRoute/ProtectedRoute";
 import Choose from "./components/choose/choose";
 import Uploader from "./components/uploader/uploader";
 import Mapper from "./components/mapper/mapper";
 
+import ContextMenu from "./components/context/ContextMenu";
+import "./components/context/ContextMenu.css";
+
 function App() {
   const dispatch = useDispatch();
+  const [contextMenu, setContextMenu] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     const id = sessionStorage.getItem("id");
     if (id) {
       dispatch(authActions.login(id));
     }
   }, [dispatch]);
+
+  const handleClose = () => {
+    setContextMenu(null);
+  };
+ 
+  const logout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.clear("id");
+    dispatch(authActions.logout());
+  };
+  const contextMenuOptions = [
+    { label: 'Home', onClick: () => {}, path: '/home' },
+    { label: 'Profile', onClick: () => {}, path: '/home/profile' },
+    { label: 'Logout', onClick: logout, path: '/login' },
+  ];
+
   return (
-    <BrowserRouter>
+    <div className="App">
       <Routes>
         <Route path="/" element={<FirstPage />}></Route>
         <Route path="/choose" element={<Choose />}></Route>
         <Route path="/register" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgotpass" element={<Forgot />}></Route>
-        <Route path="/Uploader" element={<Uploader/>}></Route>
-        <Route path="/mapper" element={<Mapper/>}></Route>
+        <Route path="/Uploader" element={<Uploader />}></Route>
+        <Route path="/mapper" element={<Mapper />}></Route>
         <Route path="/resetpass/:id/:token" element={<Reset />}></Route>
         <Route
           path="/home"
@@ -106,12 +129,12 @@ function App() {
           }
         />
         <Route
-        path="/home/mapper"
-        element={
-          <ProtectedRoute>
-            <Mapper />
-          </ProtectedRoute>
-        }
+          path="/home/mapper"
+          element={
+            <ProtectedRoute>
+              <Mapper />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/home/Jobdescription/add"
@@ -130,8 +153,21 @@ function App() {
           }
         />
       </Routes>
-    </BrowserRouter>
+      {location.pathname !== '/login' && (
+        <ContextMenu
+          options={contextMenuOptions}
+          onClose={handleClose}
+          navigate={navigate}
+        />
+      )}
+    </div>
   );
 }
 
-export default App;
+const WrappedApp = () => (
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+);
+
+export default WrappedApp;

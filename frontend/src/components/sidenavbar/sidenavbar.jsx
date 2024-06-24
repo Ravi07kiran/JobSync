@@ -40,7 +40,7 @@ const SideNavbar = () => {
     if (storedUserId) {
       setUserId(storedUserId);
       employeeCount(storedUserId);
-      // fetchSalaryTotal(storedUserId);
+     
     }
   }, []);
 
@@ -50,7 +50,7 @@ const SideNavbar = () => {
 
   useEffect(() => {
     employeeCount();
-    // fetchSalaryTotal();
+    
   }, []);
 
   //get employee
@@ -73,7 +73,7 @@ const SideNavbar = () => {
   useEffect(() => {
     fetchEmployee();
   }, [allEmployees]);
-  // Check if employees is defined before mapping
+
   const employeesList = employees || [];
 
   return (

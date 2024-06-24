@@ -5,8 +5,11 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../model/signups");
 const Activity = require("../model/activity");
 
+const axios = require('./axiosConfig');
+
 router.use(express.json());
 
+require('dotenv').config()
 
 const logActivity = async (userId, username, action, details) => {
   try {
@@ -25,15 +28,17 @@ const logActivity = async (userId, username, action, details) => {
 };
 
 
+
+
+const jwtSecret=process.env.JWT_SECRET;
+
 const verifyUser = (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
     if (!token) {
-      return res
-        .status(401)
-        .json({ error: "Authorization token not provided" });
+      return res.status(401).json({ error: "Authorization token not provided" });
     }
-    jwt.verify(token, "jwt-secret-key", (err, decoded) => {
+    jwt.verify(token, jwtSecret, (err, decoded) => {
       if (err) {
         throw err;
       }
@@ -41,11 +46,10 @@ const verifyUser = (req, res, next) => {
       next();
     });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ success: false, error: "Token is invalid or expired" });
+    return res.status(401).json({ success: false, error: "Token is invalid or expired" });
   }
 };
+
 
 router.get("/home", verifyUser, (req, res) => {
   return res.status(200).json({ success: true, user: req.user });
@@ -62,7 +66,7 @@ router.post("/login", async (req, res) => {
     const passwordMatch = bcrypt.compare(password, user.password);
     if (passwordMatch) {
       const { password, ...others } = user._doc;
-      const token = jwt.sign({ userId: user._id }, "jwt-secret-key", {
+      const token = jwt.sign({ userId: user._id },jwtSecret, {
         expiresIn: "5m",
       });
       await logActivity(user._id, user.name ,"Login", "User logged in.");
@@ -157,6 +161,24 @@ router.put("/update_user/:id", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error in updating. Please try again." });
+  }
+});
+
+
+router.get("/stock/:symbol", async (req, res) => {
+  const { symbol } = req.params;
+
+  try {
+    const response = await axios.get('', {
+      params: {
+        function: 'GLOBAL_QUOTE', // Example function, can be changed based on the data needed
+        symbol: symbol
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching stock data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
