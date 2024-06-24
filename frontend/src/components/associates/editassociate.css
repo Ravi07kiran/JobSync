@@ -31,3 +31,37 @@
 .editemp-close:hover {
   background-color: #d70303e4;
 }
+.skill-group {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.skill-name {
+  width: calc(100% - 40px);
+  display: inline-block;
+}
+
+.skill-proficiency {
+  width: calc(100% - 40px);
+  display: inline-block;
+  margin-left: 0px;
+}
+
+.remove-skill-button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 1.2em;
+  color: #ff0000;
+  cursor: pointer;
+}
+
+.addempgroup .remove-skill-button {
+  right: 0px;
+  top: 19%;
+  
+  transform: translateY(-50%);
+}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "./associate.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EmployeeCard from "../cards/associatecard";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -69,23 +70,8 @@ const Employees = () => {
         </div>
         {employees.length > 0 ? (
           <div className="employee-card-container">
-            {employees.map((e) => (
-              <div className="employee-card" key={e._id}>
-                <h4>EMPid:{e.employeeid}</h4>
-                <p>Name: {e.name}</p>
-                <p>Email: {e.email}</p>
-                <p>Tier: {e.tier}</p>
-                <p>Experience: {e.experience} years</p>
-              
-                <div className="employee-card-actions" style={{ justifyContent: "flex-end" }}>
-                  <Link to={`/home/employee/edit/${e._id}`} className="customedit btn-sm me-2">
-                    Edit
-                  </Link>
-                  <button className="customdelete btn-sm" onClick={() => deleteEmployee(e._id)}>
-                    Delete
-                  </button>
-                </div>
-              </div>
+            {employees.map((employee) => (
+              <EmployeeCard key={employee._id} employee={employee} deleteEmployee={deleteEmployee} />
             ))}
           </div>
         ) : (
@@ -99,3 +85,4 @@ const Employees = () => {
 };
 
 export default Employees;
+

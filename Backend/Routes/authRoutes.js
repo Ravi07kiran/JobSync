@@ -9,7 +9,7 @@ const axios = require('./axiosConfig');
 
 router.use(express.json());
 
-require('dotenv').config()
+require('dotenv').config();
 
 const logActivity = async (userId, username, action, details) => {
   try {
@@ -19,7 +19,6 @@ const logActivity = async (userId, username, action, details) => {
       action: action,
       details: details,
       timestamp: new Date(),
-     
     });
     await activity.save();
   } catch (error) {
@@ -27,10 +26,7 @@ const logActivity = async (userId, username, action, details) => {
   }
 };
 
-
-
-
-const jwtSecret=process.env.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET;
 
 const verifyUser = (req, res, next) => {
   try {
@@ -50,11 +46,9 @@ const verifyUser = (req, res, next) => {
   }
 };
 
-
 router.get("/home", verifyUser, (req, res) => {
   return res.status(200).json({ success: true, user: req.user });
 });
-
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
@@ -66,10 +60,10 @@ router.post("/login", async (req, res) => {
     const passwordMatch = bcrypt.compare(password, user.password);
     if (passwordMatch) {
       const { password, ...others } = user._doc;
-      const token = jwt.sign({ userId: user._id },jwtSecret, {
+      const token = jwt.sign({ userId: user._id }, jwtSecret, {
         expiresIn: "5m",
       });
-      await logActivity(user._id, user.name ,"Login", "User logged in.");
+      await logActivity(user._id, user.name, "Login", "User logged in.");
       return res.status(200).json({ others, token });
     } else {
       return res
@@ -80,10 +74,9 @@ router.post("/login", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-//register
+
 router.post("/register", async (req, res) => {
   try {
-    // Check if the email is already registered
     const existingUser = await userModel.findOne({ email: req.body.email });
 
     if (existingUser) {
@@ -91,58 +84,49 @@ router.post("/register", async (req, res) => {
         .status(400)
         .json({ error: "Email is already registered. Please Login" });
     } else {
-      // Hash the password before saving it
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
-      // Create a new user with the hashed password
       const newUser = {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
         role: req.body.role,
       };
-      // Save the user to the database
       const createdUser = await userModel.create(newUser);
-      // Respond with the created user
       res.json(createdUser);
-      await logActivity(createdUser._id,  createdUser.name, "Register", "User registered.");
+      await logActivity(createdUser._id, createdUser.name, "Register", "User registered.");
     }
   } catch (error) {
-    // Handle errors
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// Get all users with role "user" (not admins)
+
 router.get("/users", async (req, res) => {
   try {
-    const users = await userModel.find({ role: ["LC","RM","HR"] }, "_id name role email");
+    const users = await userModel.find({ role: ["LC", "RM", "HR"] }, "_id name role email");
     res.json(users);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// Delete user by ID
+
 router.delete("/users/:id", async (req, res) => {
   try {
     const userId = req.params.id;
-    // Check if the user exists
     const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    // Remove the user
     await userModel.findByIdAndDelete(userId);
-    
     res.status(200).json({ message: "User deleted successfully" });
-    
     await logActivity(userId, user.name, "Delete User", `Deleted user ${userId}.`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-//update user
+
 router.put("/update_user/:id", async (req, res) => {
   const { id } = req.params;
   const { name, email, role } = req.body;
@@ -164,14 +148,13 @@ router.put("/update_user/:id", async (req, res) => {
   }
 });
 
-
 router.get("/stock/:symbol", async (req, res) => {
   const { symbol } = req.params;
 
   try {
     const response = await axios.get('', {
       params: {
-        function: 'GLOBAL_QUOTE', // Example function, can be changed based on the data needed
+        function: 'GLOBAL_QUOTE',
         symbol: symbol
       }
     });

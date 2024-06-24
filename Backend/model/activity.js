@@ -1,19 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const activitySchema = new  mongoose.Schema({
-
+const activitySchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "signups",
-    required: true
+    required: true,
   },
-  name: {type: String, required: true},
-  action: { type: String, required: true },  
-  details: { type: String },
-  timestamp: { type: Date, default: Date.now }  
- 
+  name: {
+    type: String,
+    required: true,
+  },
+  action: {
+    type: String,
+    required: true,
+  },
+  details: {
+    type: String,
+    required: true,
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-
-
-module.exports = mongoose.model('Activity', activitySchema);
+const Activity = mongoose.model("Activity", activitySchema);
+module.exports = Activity;

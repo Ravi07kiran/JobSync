@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Uploader.css'; 
+import UploadCard from '../cards/uploadcard'; 
 
 const Uploader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -29,23 +30,12 @@ const Uploader = () => {
 
   return (
     <div className="uploaderContainer">
-      <div className="uploadCard">
-        <h1 className="uploadTitle">Associate uploader</h1>
-        <input
-          type="file"
-          name="csvFile"
-          onChange={handleFileChange}
-          className="inputFileStyle"
-        />
-        <button
-          onClick={handleFileUpload}
-          disabled={!selectedFile}
-          className="uploadButton"
-        >
-          Upload
-        </button>
-        <p className="uploadMessage">{uploadMessage}</p>
-      </div>
+      <UploadCard
+        selectedFile={selectedFile}
+        handleFileChange={handleFileChange}
+        handleFileUpload={handleFileUpload}
+        uploadMessage={uploadMessage}
+      />
     </div>
   );
 };
