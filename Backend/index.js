@@ -7,13 +7,18 @@ const uploadRoutes = require("./routes/uploadRoutes");
 const { default: mongoose } = require('mongoose');
 const bodyParser = require("body-parser");
 
+
 require('dotenv').config();
 
 const PORT = process.env.PORT || 4000;
 const URI=process.env.URI;
 
+
+
 const app = express();
 app.use(cors());
+
+
 app.use(bodyParser.json());
 app.use("/auth", authRoutes);
 app.use("/employee", employeeRoutes);

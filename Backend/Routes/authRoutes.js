@@ -4,12 +4,44 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const userModel = require("../model/signups");
 const Activity = require("../model/activity");
+const session = require('express-session');
+
+const verifyUser= require("../middleware/verifyUser");
 
 const axios = require('./axiosConfig');
 
+require('dotenv').config();
+
+const jwtSecret = process.env.JWT_SECRET;
+
 router.use(express.json());
 
-require('dotenv').config();
+const app = express();
+
+app.use(session({
+  secret: jwtSecret,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 300000 }
+}));
+
+app.use((req, res, next) => {
+if (req.session) {
+    if (!req.session.startTime) {
+        req.session.startTime = Date.now();
+    } else if (Date.now() - req.session.startTime > 300000) { // 300000 milliseconds = 5 minutes
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.status(440).send('Session expired');
+        });
+    }
+}
+next();
+});
+
+
 
 const logActivity = async (userId, username, action, details) => {
   try {
@@ -23,26 +55,6 @@ const logActivity = async (userId, username, action, details) => {
     await activity.save();
   } catch (error) {
     console.error('Error logging activity:', error);
-  }
-};
-
-const jwtSecret = process.env.JWT_SECRET;
-
-const verifyUser = (req, res, next) => {
-  try {
-    const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ error: "Authorization token not provided" });
-    }
-    jwt.verify(token, jwtSecret, (err, decoded) => {
-      if (err) {
-        throw err;
-      }
-      req.user = decoded;
-      next();
-    });
-  } catch (error) {
-    return res.status(401).json({ success: false, error: "Token is invalid or expired" });
   }
 };
 
