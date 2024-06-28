@@ -47,10 +47,12 @@ function App() {
     sessionStorage.clear("id");
     dispatch(authActions.logout());
   };
+  
   const contextMenuOptions = [
     { label: 'Home', onClick: () => {}, path: '/home' },
     { label: 'Profile', onClick: () => {}, path: '/home/profile' },
-    { label: 'Logout', onClick: logout, path: '/login' },
+    { label: 'Employees', onClick:  () => {}, path: '/home/employee' },
+    { label: 'Jobdescriptions', onClick:  () => {}, path: '/home/Jobdescription' },
   ];
 
   return (
